@@ -7,7 +7,7 @@
 <style>
   @page {
     size: A4;
-    margin: 14mm 16mm;
+    margin: 12mm 14mm;
   }
   * { box-sizing: border-box; }
   body {
@@ -15,26 +15,37 @@
     color: #111827;
     background: #f3f4f6;
     margin: 0;
-    padding: 20px 0;
-    line-height: 1.48;
-    font-size: 10.2pt;
+    padding: 18px 0;
+    line-height: 1.42;
+    font-size: 9.4pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
   .page {
     width: 210mm;
-    min-height: 297mm;
+    height: 297mm;
     margin: 0 auto 18px;
     background: #ffffff;
-    padding: 15mm 17mm;
+    padding: 12mm 14mm;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.10);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     page-break-after: always;
-    position: relative;
+    break-after: page;
   }
-  .page:last-child { page-break-after: auto; }
+  .page:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+  .page-body {
+    flex: 1 1 auto;
+  }
   @media print {
     body { background: #fff; padding: 0; }
     .page {
       width: auto;
-      min-height: auto;
+      height: 271mm;
       margin: 0;
       padding: 0;
       box-shadow: none;
@@ -43,23 +54,23 @@
   }
   .banner {
     border-bottom: 2.5px solid #1e3a8a;
-    padding-bottom: 10px;
-    margin-bottom: 14px;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
   }
   .univ {
-    font-size: 9.5pt;
+    font-size: 8.8pt;
     font-weight: 700;
     color: #1e3a8a;
     text-transform: uppercase;
     letter-spacing: 0.6px;
   }
   h1 {
-    margin: 4px 0 4px;
-    font-size: 17.5pt;
+    margin: 3px 0 3px;
+    font-size: 16.5pt;
     color: #0f172a;
   }
   .subtitle {
-    font-size: 10pt;
+    font-size: 9.2pt;
     color: #475569;
   }
   .student-box {
@@ -68,61 +79,66 @@
     gap: 8px;
     background: #eff6ff;
     border: 1.5px solid #bfdbfe;
-    border-radius: 8px;
-    padding: 10px 12px;
-    margin: 12px 0 14px;
+    border-radius: 7px;
+    padding: 8px 11px;
+    margin: 9px 0 11px;
   }
-  .student-box .k { font-size: 8pt; color: #1e40af; text-transform: uppercase; font-weight: 700; }
-  .student-box .v { font-size: 10.5pt; font-weight: 700; color: #0f172a; }
+  .student-box .k { font-size: 7.5pt; color: #1e40af; text-transform: uppercase; font-weight: 700; }
+  .student-box .v { font-size: 10pt; font-weight: 700; color: #0f172a; }
   h2 {
-    font-size: 12.5pt;
+    font-size: 11.5pt;
     color: #1e3a8a;
     border-bottom: 1px solid #cbd5e1;
-    padding-bottom: 3px;
-    margin: 14px 0 8px;
+    padding-bottom: 2.5px;
+    margin: 11px 0 6px;
   }
+  h2:first-child { margin-top: 0; }
   h3 {
-    font-size: 10.5pt;
+    font-size: 9.8pt;
     color: #0f172a;
-    margin: 10px 0 4px;
+    margin: 8px 0 3px;
   }
-  p { margin: 5px 0 8px; text-align: justify; }
+  p { margin: 4px 0 6px; text-align: justify; }
+  ul { margin: 4px 0 7px 17px; padding: 0; }
+  li { margin-bottom: 3px; }
   table {
     width: 100%;
     border-collapse: collapse;
-    margin: 8px 0 12px;
-    font-size: 9.3pt;
+    margin: 6px 0 9px;
+    font-size: 8.7pt;
   }
   th, td {
     border: 1px solid #cbd5e1;
-    padding: 5.5px 8px;
+    padding: 4.5px 7px;
     text-align: left;
   }
   th { background: #f1f5f9; color: #0f172a; font-weight: 700; }
   code {
     font-family: Consolas, "Liberation Mono", Menlo, monospace;
     background: #f1f5f9;
-    padding: 1px 4px;
+    padding: 0.5px 3.5px;
     border-radius: 3px;
-    font-size: 9pt;
+    font-size: 8.4pt;
   }
   pre {
     background: #0f172a;
     color: #e2e8f0;
-    padding: 9px 11px;
+    padding: 8px 10px;
     border-radius: 6px;
     font-family: Consolas, "Liberation Mono", monospace;
-    font-size: 8.3pt;
-    overflow-x: auto;
-    line-height: 1.4;
-    margin: 6px 0 10px;
+    font-size: 7.7pt;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow: visible;
+    line-height: 1.38;
+    margin: 5px 0 8px;
   }
   .pass { color: #15803d; font-weight: 700; }
   .shot-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin: 8px 0;
+    gap: 8px;
+    margin: 7px 0 0;
   }
   .shot-box {
     border: 1.2px dashed #94a3b8;
@@ -130,7 +146,7 @@
     padding: 6px;
     text-align: center;
     background: #f8fafc;
-    min-height: 125px;
+    min-height: 112px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -138,45 +154,47 @@
   }
   .shot-box.wide {
     grid-column: span 2;
-    min-height: 155px;
+    min-height: 132px;
   }
   .shot-box img {
     max-width: 100%;
-    max-height: 175px;
+    max-height: 145px;
     border: 1px solid #cbd5e1;
     border-radius: 4px;
     display: block;
     margin: 0 auto 4px;
   }
+  .shot-box.wide img {
+    max-height: 165px;
+  }
   .shot-box .cap {
-    font-size: 8.3pt;
+    font-size: 8pt;
     color: #334155;
     font-weight: 600;
   }
   .shot-placeholder {
-    font-size: 8.2pt;
+    font-size: 7.8pt;
     color: #64748b;
-    padding: 16px 8px;
+    padding: 10px 6px;
   }
   .callout {
     background: #fefce8;
     border-left: 4px solid #eab308;
-    padding: 8px 11px;
+    padding: 7px 10px;
     border-radius: 0 6px 6px 0;
-    margin: 8px 0;
-    font-size: 9.5pt;
+    margin: 6px 0 0;
+    font-size: 8.9pt;
+    text-align: justify;
   }
   .footer {
-    position: absolute;
-    bottom: 10mm;
-    left: 17mm;
-    right: 17mm;
+    flex-shrink: 0;
     display: flex;
     justify-content: space-between;
-    font-size: 8.2pt;
+    font-size: 8pt;
     color: #64748b;
-    border-top: 1px solid #e2e8f0;
-    padding-top: 4px;
+    border-top: 1px solid #cbd5e1;
+    padding-top: 5px;
+    margin-top: 8px;
   }
   .toolbar {
     width: 210mm;
@@ -188,7 +206,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 9.5pt;
+    font-size: 9.2pt;
   }
   .toolbar button {
     background: #38bdf8;
@@ -204,82 +222,83 @@
 <body>
 
 <div class="toolbar no-print">
-  <div><strong>ZOSIMA Submission Report (4 Pages)</strong> — Save your 6 official simulator PNGs in <code>report/screenshots/</code>, refresh, then click Print &rarr; Save as PDF.</div>
+  <div><strong>ZOSIMA Submission Report (4 Pages)</strong> — Drop your 6 PNGs into <code>report/screenshots/</code> and run <code>.\report\build_pdf.ps1</code> (or Print &rarr; Save as PDF).</div>
   <button onclick="window.print()">Print / Save as PDF</button>
 </div>
 
 <!-- ======================= PAGE 1 ======================= -->
 <div class="page">
-  <div class="banner">
-    <div class="univ">School of Engineering &amp; Technology, K.R. Mangalam University</div>
-    <h1>Capstone Project: Make the Computer Draw a Box</h1>
-    <div class="subtitle">Nand to Tetris – I (ETCCNT301) &nbsp;&bull;&nbsp; Course Outcomes: CO1–CO4 &nbsp;&bull;&nbsp; Individual Submission</div>
+  <div class="page-body">
+    <div class="banner">
+      <div class="univ">School of Engineering &amp; Technology, K.R. Mangalam University</div>
+      <h1>Capstone Project: Make the Computer Draw a Box</h1>
+      <div class="subtitle">Nand to Tetris – I (ETCCNT301) &nbsp;&bull;&nbsp; Course Outcomes: CO1–CO4 &nbsp;&bull;&nbsp; Individual Submission</div>
+    </div>
+
+    <div class="student-box">
+      <div><div class="k">Student Name</div><div class="v">Shantanu Pandya</div></div>
+      <div><div class="k">Roll Number</div><div class="v">2501730014</div></div>
+      <div><div class="k">Personal Number (K)</div><div class="v">K = 14</div></div>
+      <div><div class="k">Box Size &amp; Row</div><div class="v">48 &times; 20 px @ Row 14</div></div>
+    </div>
+
+    <h2>1. Project Overview &amp; Personalized Parameters (K = 14)</h2>
+    <p>
+      This capstone project integrates the complete bottom-up hardware and software stack of the Hack computer:
+      constructing the 16-bit Hack CPU, memory-mapped I/O system, and top-level Computer in HDL (Part A);
+      writing a two-pass Python Hack Assembler with a personalized duplicate-label detector (Part B); and
+      developing an interactive Hack assembly program (<code>Box.asm</code>) assembled exclusively by my own
+      assembler to render a keyboard-controlled black box on the Hack screen (Part C).
+    </p>
+
+    <table>
+      <thead>
+        <tr><th>Parameter</th><th>Specification Formula</th><th>Computed Value for Roll No. 2501730014</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Personal Number <code>K</code></td><td>Last two digits of roll number</td><td><strong><code>K = 14</code></strong></td></tr>
+        <tr><td>Assembler Extra Feature</td><td><code>K mod 3 = 14 mod 3 = 2</code></td><td><strong>Warn whenever the same label is written twice</strong></td></tr>
+        <tr><td>Box Starting Row</td><td>Row <code>K</code> (0-indexed from top)</td><td><strong>Row 14</strong> (spans rows 14 to 33 inclusive)</td></tr>
+        <tr><td>Box Height</td><td>Fixed <code>20</code> rows</td><td><strong>20 rows</strong></td></tr>
+        <tr><td>Box Width</td><td><code>16 &times; ((K mod 4) + 1) = 16 &times; (2 + 1)</code></td><td><strong>48 pixels</strong> (3 words from left edge)</td></tr>
+        <tr><td>Start Screen RAM Address</td><td><code>SCREEN + 32 &times; K = 16384 + 32 &times; 14</code></td><td><strong><code>RAM[16832]</code></strong> (60 screen words / 960 pixels)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>2. Part A — Building the Hack Computer (HDL)</h2>
+    <h3>2.1 Memory.hdl (Memory-Mapped I/O Router)</h3>
+    <p>
+      The Hack data address space spans 15 bits (<code>0x0000–0x6000</code>). Using the top two bits
+      <code>address[13..14]</code>, a <code>DMux4Way</code> routes the write-enable signal <code>load</code>
+      exclusively to the active device: <code>00</code> and <code>01</code> are merged with an <code>Or</code>
+      gate to drive <code>RAM16K</code> (<code>address[0..13]</code>), <code>10</code> drives <code>Screen</code>
+      (<code>address[0..12]</code>), and <code>11</code> maps to the read-only <code>Keyboard</code>. A
+      <code>Mux4Way16</code> selects the matching device output.
+    </p>
+
+    <h3>2.2 CPU.hdl (Central Processing Unit)</h3>
+    <p>
+      <code>CPU.hdl</code> decodes the 16-bit instruction using <code>instruction[15]</code> as the opcode
+      (<code>0</code> = A-instruction, <code>1</code> = C-instruction). A <code>Mux16</code> selects either the
+      raw instruction or the ALU output for <code>ARegister</code>, which loads on every A-instruction or whenever
+      <code>instruction[15] &amp; instruction[5]</code> (<code>d1</code>) is asserted. Both <code>DRegister</code>
+      loading (<code>d2</code>) and <code>writeM</code> (<code>d3</code>) are gated with <code>instruction[15]</code>
+      so A-instructions never cause unintended side effects. Bit <code>instruction[12]</code> selects between
+      <code>A</code> and <code>inM</code> for the ALU's <code>y</code>-input, bits <code>11..6</code> drive
+      <code>zx, nx, zy, ny, f, no</code>, and jump bits <code>2..0</code> are evaluated against <code>ng</code>,
+      <code>zr</code>, and <code>pos = NOT(zr OR ng)</code> to drive <code>PC.load</code>.
+    </p>
+
+    <h3>2.3 Computer.hdl &amp; Built-In Chips Disclosure</h3>
+    <p>
+      <code>Computer.hdl</code> connects <code>ROM32K</code>, <code>CPU</code>, and <code>Memory</code> in a
+      Harvard architecture. Per the official Project 5 test scripts (<code>CPU.tst</code>, <code>Memory.tst</code>,
+      <code>ComputerAdd.tst</code>, <code>ComputerMax.tst</code>, <code>ComputerRect.tst</code>), the built-in
+      <code>ARegister</code>, <code>DRegister</code>, <code>ALU</code>, <code>PC</code>, <code>RAM16K</code>,
+      <code>ROM32K</code>, <code>Screen</code>, <code>Keyboard</code>, and primitive combinational gates are used so
+      the official test scripts can directly inspect internal register and memory states.
+    </p>
   </div>
-
-  <div class="student-box">
-    <div><div class="k">Student Name</div><div class="v">Shantanu Pandya</div></div>
-    <div><div class="k">Roll Number</div><div class="v">2501730014</div></div>
-    <div><div class="k">Personal Number (K)</div><div class="v">K = 14</div></div>
-    <div><div class="k">Box Size &amp; Row</div><div class="v">48 &times; 20 px @ Row 14</div></div>
-  </div>
-
-  <h2>1. Project Overview &amp; Personalized Parameters (K = 14)</h2>
-  <p>
-    This capstone project integrates the complete bottom-up hardware and software stack of the Hack computer:
-    constructing the 16-bit Hack CPU, memory-mapped I/O system, and top-level Computer in HDL (Part A);
-    writing a two-pass Python Hack Assembler with a personalized duplicate-label detector (Part B); and
-    developing an interactive Hack assembly program (<code>Box.asm</code>) assembled exclusively by my own
-    assembler to render a keyboard-controlled black box on the Hack screen (Part C).
-  </p>
-
-  <table>
-    <thead>
-      <tr><th>Parameter</th><th>Specification Formula</th><th>Computed Value for Roll No. 2501730014</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Personal Number <code>K</code></td><td>Last two digits of roll number</td><td><strong><code>K = 14</code></strong></td></tr>
-      <tr><td>Assembler Extra Feature</td><td><code>K mod 3 = 14 mod 3 = 2</code></td><td><strong>Warn whenever the same label is written twice</strong></td></tr>
-      <tr><td>Box Starting Row</td><td>Row <code>K</code> (0-indexed from top)</td><td><strong>Row 14</strong> (spans rows 14 to 33 inclusive)</td></tr>
-      <tr><td>Box Height</td><td>Fixed <code>20</code> rows</td><td><strong>20 rows</strong></td></tr>
-      <tr><td>Box Width</td><td><code>16 &times; ((K mod 4) + 1) = 16 &times; (2 + 1)</code></td><td><strong>48 pixels</strong> (3 words from left edge)</td></tr>
-      <tr><td>Start Screen RAM Address</td><td><code>SCREEN + 32 &times; K = 16384 + 32 &times; 14</code></td><td><strong><code>RAM[16832]</code></strong> (60 screen words / 960 pixels)</td></tr>
-    </tbody>
-  </table>
-
-  <h2>2. Part A — Building the Hack Computer (HDL)</h2>
-  <h3>2.1 Memory.hdl (Memory-Mapped I/O Router)</h3>
-  <p>
-    The Hack data address space spans 15 bits (<code>0x0000–0x6000</code>). Using the top two bits
-    <code>address[13..14]</code>, a <code>DMux4Way</code> routes the write-enable signal <code>load</code>
-    exclusively to the active device: <code>00</code> and <code>01</code> are merged with an <code>Or</code>
-    gate to drive <code>RAM16K</code> (<code>address[0..13]</code>), <code>10</code> drives <code>Screen</code>
-    (<code>address[0..12]</code>), and <code>11</code> maps to the read-only <code>Keyboard</code>. A
-    <code>Mux4Way16</code> selects the matching device output.
-  </p>
-
-  <h3>2.2 CPU.hdl (Central Processing Unit)</h3>
-  <p>
-    <code>CPU.hdl</code> decodes the 16-bit instruction using <code>instruction[15]</code> as the opcode
-    (<code>0</code> = A-instruction, <code>1</code> = C-instruction). A <code>Mux16</code> selects either the
-    raw instruction or the ALU output for <code>ARegister</code>, which loads on every A-instruction or whenever
-    <code>instruction[15] &amp; instruction[5]</code> (<code>d1</code>) is asserted. Both <code>DRegister</code>
-    loading (<code>d2</code>) and <code>writeM</code> (<code>d3</code>) are gated with <code>instruction[15]</code>
-    so A-instructions never cause unintended side effects. Bit <code>instruction[12]</code> selects between
-    <code>A</code> and <code>inM</code> for the ALU's <code>y</code>-input, bits <code>11..6</code> drive
-    <code>zx, nx, zy, ny, f, no</code>, and jump bits <code>2..0</code> are evaluated against <code>ng</code>,
-    <code>zr</code>, and <code>pos = NOT(zr OR ng)</code> to drive <code>PC.load</code>.
-  </p>
-
-  <h3>2.3 Computer.hdl &amp; Built-In Chips Disclosure</h3>
-  <p>
-    <code>Computer.hdl</code> connects <code>ROM32K</code>, <code>CPU</code>, and <code>Memory</code> in a
-    clean Harvard architecture. Per the official Project 5 test scripts (<code>CPU.tst</code>,
-    <code>Memory.tst</code>, <code>ComputerAdd.tst</code>, <code>ComputerMax.tst</code>,
-    <code>ComputerRect.tst</code>), the built-in <code>ARegister</code>, <code>DRegister</code>, <code>ALU</code>,
-    <code>PC</code>, <code>RAM16K</code>, <code>ROM32K</code>, <code>Screen</code>, <code>Keyboard</code>, and
-    standard combinational primitives are used so the official scripts can directly inspect internal register
-    and memory states during automated verification.
-  </p>
 
   <div class="footer">
     <span>Shantanu Pandya (2501730014) &bull; K = 14</span>
@@ -290,51 +309,53 @@
 
 <!-- ======================= PAGE 2 ======================= -->
 <div class="page">
-  <h2>2.4 Part A — Official Hardware Simulator Verification</h2>
-  <p>
-    All three HDL chips (<code>CPU.hdl</code>, <code>Memory.hdl</code>, and <code>Computer.hdl</code>) were
-    verified against the official Nand2Tetris Project 5 test scripts in the Hardware Simulator. Every test
-    completed with zero comparison errors:
-  </p>
+  <div class="page-body">
+    <h2>2.4 Part A — Official Hardware Simulator Verification</h2>
+    <p>
+      All three HDL chips (<code>CPU.hdl</code>, <code>Memory.hdl</code>, and <code>Computer.hdl</code>) were
+      verified against the official Nand2Tetris Project 5 test scripts in the Hardware Simulator. Every test
+      completed with zero comparison errors:
+    </p>
 
-  <table>
-    <thead>
-      <tr><th>Official Test Script</th><th>Target Chip</th><th>Verification Scope</th><th>Result</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><code>CPU.tst</code></td><td><code>CPU.hdl</code></td><td>A/C decoding, ALU ops, all 7 jumps, reset</td><td class="pass">PASS — Comparison ended successfully</td></tr>
-      <tr><td><code>Memory.tst</code></td><td><code>Memory.hdl</code></td><td>Lower/Upper RAM, Screen, Keyboard ('K','Y'), isolation</td><td class="pass">PASS — Comparison ended successfully</td></tr>
-      <tr><td><code>ComputerAdd.tst</code></td><td><code>Computer.hdl</code></td><td>Executes <code>Add.hack</code> (2+3=5 in RAM[0]) + reset</td><td class="pass">PASS — Comparison ended successfully</td></tr>
-      <tr><td><code>ComputerMax.tst</code></td><td><code>Computer.hdl</code></td><td>Executes <code>Max.hack</code> with conditional branching</td><td class="pass">PASS — Comparison ended successfully</td></tr>
-      <tr><td><code>ComputerRect.tst</code></td><td><code>Computer.hdl</code></td><td>Executes <code>Rect.hack</code> drawing a 16&times;4 rectangle</td><td class="pass">PASS — Comparison ended successfully</td></tr>
-    </tbody>
-  </table>
+    <table>
+      <thead>
+        <tr><th>Official Test Script</th><th>Target Chip</th><th>Verification Scope</th><th>Result</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>CPU.tst</code></td><td><code>CPU.hdl</code></td><td>A/C decoding, ALU ops, all 7 jumps, reset</td><td class="pass">PASS — Comparison ended successfully</td></tr>
+        <tr><td><code>Memory.tst</code></td><td><code>Memory.hdl</code></td><td>Lower/Upper RAM, Screen, Keyboard ('K','Y'), isolation</td><td class="pass">PASS — Comparison ended successfully</td></tr>
+        <tr><td><code>ComputerAdd.tst</code></td><td><code>Computer.hdl</code></td><td>Executes <code>Add.hack</code> (2+3=5 in RAM[0]) + reset</td><td class="pass">PASS — Comparison ended successfully</td></tr>
+        <tr><td><code>ComputerMax.tst</code></td><td><code>Computer.hdl</code></td><td>Executes <code>Max.hack</code> with conditional branching</td><td class="pass">PASS — Comparison ended successfully</td></tr>
+        <tr><td><code>ComputerRect.tst</code></td><td><code>Computer.hdl</code></td><td>Executes <code>Rect.hack</code> drawing a 16&times;4 rectangle</td><td class="pass">PASS — Comparison ended successfully</td></tr>
+      </tbody>
+    </table>
 
-  <div class="shot-grid">
-    <div class="shot-box">
-      <img src="screenshots/1_cpu_tst.png" alt="CPU.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-      <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/1_cpu_tst.png</code><br>(Run <code>.\open_official_gui.ps1 -Tool hw</code> &rarr; <code>CPU.tst</code>)</div>
-      <div class="cap">Figure 1: Official Hardware Simulator — <code>CPU.tst</code> passed</div>
-    </div>
-    <div class="shot-box">
-      <img src="screenshots/2_memory_tst.png" alt="Memory.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-      <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/2_memory_tst.png</code><br>(<code>Memory.tst</code> with Screen view + 'K'/'Y' keys)</div>
-      <div class="cap">Figure 2: Official Hardware Simulator — <code>Memory.tst</code> passed</div>
-    </div>
-    <div class="shot-box">
-      <img src="screenshots/3_computer_add.png" alt="ComputerAdd.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-      <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/3_computer_add.png</code><br>(<code>ComputerAdd.tst</code>)</div>
-      <div class="cap">Figure 3: Official Hardware Simulator — <code>ComputerAdd.tst</code> passed</div>
-    </div>
-    <div class="shot-box">
-      <img src="screenshots/4_computer_max.png" alt="ComputerMax.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-      <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/4_computer_max.png</code><br>(<code>ComputerMax.tst</code>)</div>
-      <div class="cap">Figure 4: Official Hardware Simulator — <code>ComputerMax.tst</code> passed</div>
-    </div>
-    <div class="shot-box wide">
-      <img src="screenshots/5_computer_rect.png" alt="ComputerRect.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-      <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/5_computer_rect.png</code><br>(<code>ComputerRect.tst</code> showing 16&times;4 black rectangle on Screen view)</div>
-      <div class="cap">Figure 5: Official Hardware Simulator — <code>ComputerRect.tst</code> passed (Screen view enabled)</div>
+    <div class="shot-grid">
+      <div class="shot-box">
+        <img src="screenshots/1_cpu_tst.png" alt="CPU.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+        <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/1_cpu_tst.png</code><br>(Run <code>.\open_official_gui.ps1 -Tool hw</code> &rarr; <code>CPU.tst</code>)</div>
+        <div class="cap">Figure 1: Official Hardware Simulator — <code>CPU.tst</code> passed</div>
+      </div>
+      <div class="shot-box">
+        <img src="screenshots/2_memory_tst.png" alt="Memory.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+        <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/2_memory_tst.png</code><br>(<code>Memory.tst</code> with Screen view + 'K'/'Y' keys)</div>
+        <div class="cap">Figure 2: Official Hardware Simulator — <code>Memory.tst</code> passed</div>
+      </div>
+      <div class="shot-box">
+        <img src="screenshots/3_computer_add.png" alt="ComputerAdd.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+        <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/3_computer_add.png</code><br>(<code>ComputerAdd.tst</code>)</div>
+        <div class="cap">Figure 3: Official Hardware Simulator — <code>ComputerAdd.tst</code> passed</div>
+      </div>
+      <div class="shot-box">
+        <img src="screenshots/4_computer_max.png" alt="ComputerMax.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+        <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/4_computer_max.png</code><br>(<code>ComputerMax.tst</code>)</div>
+        <div class="cap">Figure 4: Official Hardware Simulator — <code>ComputerMax.tst</code> passed</div>
+      </div>
+      <div class="shot-box wide">
+        <img src="screenshots/5_computer_rect.png" alt="ComputerRect.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+        <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/5_computer_rect.png</code><br>(<code>ComputerRect.tst</code> showing 16&times;4 black rectangle on Screen view)</div>
+        <div class="cap">Figure 5: Official Hardware Simulator — <code>ComputerRect.tst</code> passed (Screen view enabled)</div>
+      </div>
     </div>
   </div>
 
@@ -347,56 +368,60 @@
 
 <!-- ======================= PAGE 3 ======================= -->
 <div class="page">
-  <h2>3. Part B — Two-Pass Python Hack Assembler (<code>assembler.py</code>)</h2>
-  <p>
-    <code>capstone/assembler.py</code> translates symbolic Hack assembly (<code>.asm</code>) into 16-bit Hack
-    machine code (<code>.hack</code>) using the standard two-pass architecture from Chapter 6, implemented using
-    only the Python standard library:
-  </p>
-  <ul style="margin:4px 0 8px 18px;padding:0;">
-    <li><strong>Symbol Table Initialization:</strong> Preloads all 23 predefined Hack symbols (<code>SP=0</code>, <code>LCL=1</code>, <code>ARG=2</code>, <code>THIS=3</code>, <code>THAT=4</code>, <code>R0–R15</code>, <code>SCREEN=16384</code>, <code>KBD=24576</code>).</li>
-    <li><strong>Pass 1 (Label Resolution &amp; Duplicate Detection):</strong> Strips <code>//</code> comments and all whitespace, ignores blank lines, and maps each pseudo-command <code>(LABEL)</code> to the current ROM instruction counter without incrementing the counter.</li>
-    <li><strong>Pass 2 (Code Emission &amp; Variable Allocation):</strong> Translates A-instructions (<code>@value</code> or <code>@symbol</code>, allocating new variables sequentially from <code>RAM[16]</code>) into <code>0</code> + 15-bit binary, and C-instructions (<code>[dest=]comp[;jump]</code>) into <code>111</code> + 7-bit <code>comp</code> + 3-bit <code>dest</code> + 3-bit <code>jump</code>.</li>
-  </ul>
+  <div class="page-body">
+    <h2>3. Part B — Two-Pass Python Hack Assembler (<code>assembler.py</code>)</h2>
+    <p>
+      <code>capstone/assembler.py</code> translates symbolic Hack assembly (<code>.asm</code>) into 16-bit Hack
+      machine code (<code>.hack</code>) using the standard two-pass architecture from Chapter 6, implemented using
+      only the Python standard library:
+    </p>
+    <ul>
+      <li><strong>Symbol Table Initialization:</strong> Preloads all 23 predefined Hack symbols (<code>SP=0</code>, <code>LCL=1</code>, <code>ARG=2</code>, <code>THIS=3</code>, <code>THAT=4</code>, <code>R0–R15</code>, <code>SCREEN=16384</code>, <code>KBD=24576</code>).</li>
+      <li><strong>Pass 1 (Label Resolution &amp; Duplicate Detection):</strong> Strips <code>//</code> comments and all whitespace, ignores blank lines, and maps each pseudo-command <code>(LABEL)</code> to the current ROM instruction counter without incrementing the counter.</li>
+      <li><strong>Pass 2 (Code Emission &amp; Variable Allocation):</strong> Translates A-instructions (<code>@value</code> or <code>@symbol</code>, allocating new variables sequentially from <code>RAM[16]</code>) into <code>0</code> + 15-bit binary, and C-instructions (<code>[dest=]comp[;jump]</code>) into <code>111</code> + 7-bit <code>comp</code> + 3-bit <code>dest</code> + 3-bit <code>jump</code>.</li>
+    </ul>
 
-  <h3>3.1 Official Benchmark Comparison (Bit-for-Bit Verification)</h3>
-  <p>
-    Every official Project 6 benchmark was assembled by both the official Nand2Tetris <code>Assembler.bat</code>
-    and my <code>assembler.py</code>, and verified for 100% character-for-character equality:
-  </p>
+    <h3>3.1 Official Benchmark Comparison (Bit-for-Bit Verification)</h3>
+    <p>
+      Every official Project 6 benchmark was assembled by both the official Nand2Tetris <code>Assembler.bat</code>
+      and my <code>assembler.py</code>, and verified for 100% character-for-character equality:
+    </p>
 
-  <table>
-    <thead>
-      <tr><th>Benchmark Program</th><th>Assembled Instructions</th><th>Comparison vs. Official Assembler</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><code>Add.asm</code></td><td>6</td><td class="pass">PASS — 100% bit-for-bit identical</td></tr>
-      <tr><td><code>Max.asm</code></td><td>16</td><td class="pass">PASS — 100% bit-for-bit identical</td></tr>
-      <tr><td><code>Rect.asm</code></td><td>25</td><td class="pass">PASS — 100% bit-for-bit identical</td></tr>
-      <tr><td><code>Pong.asm</code></td><td>27,483</td><td class="pass">PASS — 100% bit-for-bit identical</td></tr>
-    </tbody>
-  </table>
+    <table>
+      <thead>
+        <tr><th>Benchmark Program</th><th>Assembled Instructions</th><th>Comparison vs. Official Assembler</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>Add.asm</code></td><td>6</td><td class="pass">PASS — 100% bit-for-bit identical</td></tr>
+        <tr><td><code>Max.asm</code></td><td>16</td><td class="pass">PASS — 100% bit-for-bit identical</td></tr>
+        <tr><td><code>Rect.asm</code></td><td>25</td><td class="pass">PASS — 100% bit-for-bit identical</td></tr>
+        <tr><td><code>Pong.asm</code></td><td>27,483</td><td class="pass">PASS — 100% bit-for-bit identical</td></tr>
+      </tbody>
+    </table>
 
-  <h3>3.2 Personalized Extra Feature (K = 14 &rArr; K mod 3 = 2)</h3>
-  <p>
-    Because <code>14 mod 3 = 2</code>, my assembler implements <strong>duplicate-label warning detection</strong>.
-    During Pass 1, a dictionary <code>defined_labels</code> records each label's first declaration line number and
-    ROM address. Whenever an already-declared label appears again, <code>assembler.py</code> prints an explicit
-    diagnostic warning to <code>stderr</code> naming the duplicate label, both line numbers, and the preserved ROM
-    address, while continuing cleanly to produce valid machine code:
-  </p>
+    <h3>3.2 Personalized Extra Feature (K = 14 &rArr; K mod 3 = 2)</h3>
+    <p>
+      Because <code>14 mod 3 = 2</code>, my assembler implements <strong>duplicate-label warning detection</strong>.
+      During Pass 1, a dictionary <code>defined_labels</code> records each label's first declaration line number and
+      ROM address. Whenever an already-declared label appears again, <code>assembler.py</code> prints an explicit
+      diagnostic warning to <code>stderr</code> naming the duplicate label, both line numbers, and the preserved ROM
+      address, while continuing cleanly to produce valid machine code:
+    </p>
 
 <pre>$ python capstone/assembler.py tests/test_dup_labels.asm
 WARNING (Line 19): Duplicate label '(LOOP)' — already declared at Line 10 (ROM address 4). Keeping first definition.
 WARNING (Line 27): Duplicate label '(END)' — already declared at Line 23 (ROM address 12). Keeping first definition.
-Assembled test_dup_labels.asm -> test_dup_labels.hack (16 instructions, 2 warning(s))</pre>
+Assembled test_dup_labels.asm -&gt; test_dup_labels.hack (16 instructions, 2 warning(s))</pre>
 
-  <h3>3.3 Automated End-to-End Verification Output</h3>
+    <h3>3.3 Automated End-to-End Verification Output</h3>
 <pre>$ python tests/verify_all.py
-PART A: [PASS] CPU.tst, CPU-external.tst, MemoryNonInteractive.tst, ComputerAdd.tst, ComputerMax.tst, ComputerRect.tst
-PART B: [PASS] Add.asm (6), Max.asm (16), Rect.asm (25), Pong.asm (27483) — bit-for-bit match + Duplicate-label warnings
-PART C: [PASS] Box.asm -> Box.hack (77 instructions) -> BoxTest.tst (CPUEmulator) — Comparison ended successfully
+PART A: [PASS] CPU.tst, CPU-external.tst, MemoryNonInteractive.tst,
+               ComputerAdd.tst, ComputerMax.tst, ComputerRect.tst
+PART B: [PASS] Add.asm (6), Max.asm (16), Rect.asm (25), Pong.asm (27483)
+               — 100% bit-for-bit match + Duplicate-label warnings (K mod 3 = 2)
+PART C: [PASS] Box.asm -&gt; Box.hack (77 instructions) -&gt; BoxTest.tst (CPUEmulator)
 OVERALL RESULT: ALL CHECKS PASSED (100%)</pre>
+  </div>
 
   <div class="footer">
     <span>Shantanu Pandya (2501730014) &bull; K = 14</span>
@@ -407,61 +432,59 @@ OVERALL RESULT: ALL CHECKS PASSED (100%)</pre>
 
 <!-- ======================= PAGE 4 ======================= -->
 <div class="page">
-  <h2>4. Part C — Interactive Box Program (<code>Box.asm</code> &rarr; <code>Box.hack</code>)</h2>
-  <p>
-    <code>capstone/Box.asm</code> draws a solid black rectangle on the Hack display while any key is held down and
-    clears it immediately when the key is released. For <strong><code>K = 14</code></strong>:
-  </p>
-  <ul style="margin:4px 0 8px 18px;padding:0;">
-    <li><strong>Geometry:</strong> Starts at Row <code>14</code>, height = <code>20</code> rows (rows <code>14..33</code>), width = <code>16 &times; ((14 mod 4) + 1) = 48</code> pixels (<code>3</code> words per row from the left edge).</li>
-    <li><strong>Screen Memory Addressing:</strong> Each screen row occupies <code>32</code> 16-bit words (<code>512 / 16</code>). Row <code>14</code> starts at <code>16384 + 32 &times; 14 = 16832</code>, and the final row (row <code>33</code>) spans words <code>17440, 17441, 17442</code> (60 words = 960 pixels total).</li>
-    <li><strong>Flicker-Free State Tracking &amp; Viva-Friendly Design:</strong> The program initializes <code>start_addr = 16832</code>, <code>height = 20</code>, <code>width = 3</code>, and <code>prev_color = 0</code>. In <code>MAIN_LOOP</code>, it polls <code>RAM[KBD]</code> (<code>24576</code>) and compares the desired color (<code>-1</code> for black, <code>0</code> for white) against <code>prev_color</code>, repainting the 60 words only on state transitions. An outer loop increments <code>row_base += 32</code> independently of <code>width</code>, so moving or resizing the box requires editing only one constant.</li>
-  </ul>
+  <div class="page-body">
+    <h2>4. Part C — Interactive Box Program (<code>Box.asm</code> &rarr; <code>Box.hack</code>)</h2>
+    <p>
+      <code>capstone/Box.asm</code> draws a solid black rectangle on the Hack display while any key is held down and
+      clears it immediately when the key is released. For <strong><code>K = 14</code></strong>:
+    </p>
+    <ul>
+      <li><strong>Geometry:</strong> Starts at Row <code>14</code>, height = <code>20</code> rows (rows <code>14..33</code>), width = <code>16 &times; ((14 mod 4) + 1) = 48</code> pixels (<code>3</code> words per row from the left edge).</li>
+      <li><strong>Screen Memory Addressing:</strong> Each screen row occupies <code>32</code> 16-bit words (<code>512 / 16</code>). Row <code>14</code> starts at <code>16384 + 32 &times; 14 = 16832</code>, and the final row (row <code>33</code>) spans words <code>17440, 17441, 17442</code> (60 words = 960 pixels total).</li>
+      <li><strong>Flicker-Free Design:</strong> Stores <code>start_addr = 16832</code>, <code>height = 20</code>, <code>width = 3</code>, and <code>prev_color = 0</code>. In <code>MAIN_LOOP</code>, it polls <code>RAM[KBD]</code> (<code>24576</code>) and repaints the 60 words only on state transitions. An outer loop increments <code>row_base += 32</code> independently of <code>width</code>, so moving or resizing requires a 1-number edit.</li>
+    </ul>
 
-  <h3>4.1 Official CPU Emulator Verification (Assembled by My Own <code>assembler.py</code>)</h3>
-  <p>
-    <code>Box.asm</code> was assembled directly by <code>capstone/assembler.py</code> into 77 instructions
-    (<code>Box.hack</code>) and verified in the official <code>CPUEmulator</code> across four phases (idle, key
-    <code>'A'</code> pressed, released, Space pressed), confirming all box pixels toggle cleanly between
-    <code>-1</code> and <code>0</code> while adjacent guard words (row 13 = <code>16800</code>, col 3 = <code>16835</code>,
-    row 34 = <code>17472</code>) remain untouched at <code>0</code>:
-  </p>
+    <h3>4.1 Official CPU Emulator Verification (Assembled by My Own <code>assembler.py</code>)</h3>
+    <p>
+      <code>Box.asm</code> was assembled directly by <code>capstone/assembler.py</code> into 77 instructions
+      (<code>Box.hack</code>) and verified in the official <code>CPUEmulator</code> across four phases, confirming all
+      60 box words toggle cleanly between <code>-1</code> and <code>0</code> while adjacent guard words stay untouched:
+    </p>
 
-  <table>
-    <thead>
-      <tr><th>Phase</th><th><code>RAM[24576]</code> (KBD)</th><th>Row 13 Guard (<code>16800</code>)</th><th>Row 14 Box (<code>16832..16834</code>)</th><th>Col 3 Guard (<code>16835</code>)</th><th>Row 33 Box (<code>17440..17442</code>)</th><th>Row 34 Guard (<code>17472</code>)</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1. Initial (No key)</td><td><code>0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td></tr>
-      <tr><td>2. Key <code>'A'</code> held</td><td><code>65</code></td><td><code>0</code></td><td><strong><code>-1, -1, -1</code></strong></td><td><code>0</code></td><td><strong><code>-1, -1, -1</code></strong></td><td><code>0</code></td></tr>
-      <tr><td>3. Key released</td><td><code>0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td></tr>
-      <tr><td>4. Space held</td><td><code>32</code></td><td><code>0</code></td><td><strong><code>-1, -1, -1</code></strong></td><td><code>0</code></td><td><strong><code>-1, -1, -1</code></strong></td><td><code>0</code></td></tr>
-    </tbody>
-  </table>
+    <table>
+      <thead>
+        <tr><th>Phase</th><th><code>RAM[24576]</code> (KBD)</th><th>Row 13 Guard (<code>16800</code>)</th><th>Row 14 Box (<code>16832..16834</code>)</th><th>Col 3 Guard (<code>16835</code>)</th><th>Row 33 Box (<code>17440..17442</code>)</th><th>Row 34 Guard (<code>17472</code>)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1. Initial (No key)</td><td><code>0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td></tr>
+        <tr><td>2. Key <code>'A'</code> held</td><td><code>65</code></td><td><code>0</code></td><td><strong><code>-1, -1, -1</code></strong></td><td><code>0</code></td><td><strong><code>-1, -1, -1</code></strong></td><td><code>0</code></td></tr>
+        <tr><td>3. Key released</td><td><code>0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td></tr>
+        <tr><td>4. Space held</td><td><code>32</code></td><td><code>0</code></td><td><strong><code>-1, -1, -1</code></strong></td><td><code>0</code></td><td><strong><code>-1, -1, -1</code></strong></td><td><code>0</code></td></tr>
+      </tbody>
+    </table>
 
-  <div class="shot-grid">
-    <div class="shot-box wide">
-      <img src="screenshots/6_box_cpu_emulator.png" alt="Box.hack running in CPU Emulator" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-      <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/6_box_cpu_emulator.png</code><br>(Run <code>.\open_official_gui.ps1 -Tool cpu</code> &rarr; load <code>capstone\Box.hack</code> &rarr; hold any key &rarr; screenshot the 48&times;20 black box at row 14)</div>
-      <div class="cap">Figure 6: Official CPU Emulator running <code>Box.hack</code> (K = 14: 48&times;20 black box at Row 14, left edge, while key is pressed)</div>
+    <div class="shot-grid">
+      <div class="shot-box wide">
+        <img src="screenshots/6_box_cpu_emulator.png" alt="Box.hack running in CPU Emulator" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+        <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/6_box_cpu_emulator.png</code><br>(Run <code>.\open_official_gui.ps1 -Tool cpu</code> &rarr; load <code>capstone\Box.hack</code> &rarr; hold any key &rarr; screenshot the 48&times;20 black box at row 14)</div>
+        <div class="cap">Figure 6: Official CPU Emulator running <code>Box.hack</code> (K = 14: 48&times;20 black box at Row 14, left edge, while key is pressed)</div>
+      </div>
     </div>
-  </div>
 
-  <h2>5. One Mistake I Fixed</h2>
-  <div class="callout">
-    During early testing of <code>CPU.hdl</code> and <code>Box.asm</code>, I ran into two subtle hardware/assembly
-    pitfalls — the most instructive being in <strong><code>CPU.hdl</code>'s positive-jump condition and
-    A-instruction gating</strong>. Initially, I checked whether the ALU output was strictly positive
-    (<code>JGT</code>) using only <code>Not(in=aluNeg, out=aluPos)</code>, forgetting that when the ALU output is
-    exactly <code>0</code>, <code>aluNeg</code> is also <code>0</code> — causing <code>D;JGT</code> to falsely
-    jump on zero! Similarly, failing to gate <code>writeM</code> and <code>pcLoad</code> with
-    <code>instruction[15]</code> allowed A-instructions whose lower constant bits happened to contain <code>1</code>s
-    (such as <code>@16832</code> or <code>@3</code>) to trigger spurious memory writes or jumps. Debugging against
-    <code>CPU.tst</code> exposed the exact cycle where <code>D=0</code> followed by <code>D;JGT</code> diverged
-    from <code>CPU.cmp</code>. Fixing it by computing <code>Or(a=aluZero, b=aluNeg, out=aluLteZero)</code> followed
-    by <code>Not(in=aluLteZero, out=aluPos)</code> and gating all C-instruction control signals with
-    <code>instruction[15]</code> immediately made <code>CPU.tst</code> and all three <code>Computer*.tst</code>
-    suites pass 100%.
+    <h2>5. One Mistake I Fixed</h2>
+    <div class="callout">
+      During early testing of <code>CPU.hdl</code>, I ran into a subtle hardware bug in the <strong>strictly-positive
+      jump logic (<code>JGT</code>) and A-instruction gating</strong>. Initially, I computed <code>aluPos</code> using
+      only <code>Not(in=aluNeg, out=aluPos)</code>, forgetting that when the ALU output is <code>0</code>,
+      <code>aluNeg</code> is also <code>0</code> — causing <code>D;JGT</code> to falsely jump on zero. Similarly,
+      failing to gate <code>writeM</code> and <code>pcLoad</code> with <code>instruction[15]</code> allowed
+      A-instructions whose constant bits happened to contain <code>1</code>s (such as <code>@16832</code> or
+      <code>@3</code>) to trigger spurious memory writes or jumps. Debugging against <code>CPU.tst</code> pinpointed
+      the exact cycle where <code>D=0</code> followed by <code>D;JGT</code> diverged from <code>CPU.cmp</code>. Fixing
+      it with <code>Or(a=aluZero, b=aluNeg, out=aluLteZero)</code> &rarr; <code>Not(in=aluLteZero, out=aluPos)</code>
+      and gating all C-instruction control wires with <code>instruction[15]</code> made <code>CPU.tst</code> and all
+      three <code>Computer*.tst</code> suites pass 100%.
+    </div>
   </div>
 
   <div class="footer">

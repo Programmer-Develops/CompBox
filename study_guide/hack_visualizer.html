@@ -326,13 +326,16 @@
             Hold Mouse Here (Simulate Key 'A' = 65)
           </button>
           <button class="btn" id="toggleKeyBtn" onclick="toggleLatchKey()">Toggle Key Hold (ON/OFF)</button>
+          <button class="btn" id="pauseBtn" onclick="togglePause()">Pause CPU</button>
+          <button class="btn" onclick="singleStep()">Step 1 Inst</button>
           <button class="btn" onclick="resetBoxK14()">Reset to K = 14 Spec</button>
         </div>
         <p style="font-size:0.83rem;color:var(--muted);margin:10px 0 0;">
-          <strong>Tip:</strong> Press and hold <em>any key on your physical keyboard</em>! This page executes your actual 77-instruction <code>Box.hack</code> binary on a real JavaScript Hack CPU interpreter.
+          <strong>Why do PC/A/D keep changing even when idle?</strong> Because a real Hack CPU never halts — <code>Box.hack</code> loops continuously in <code>MAIN_LOOP</code> (ROM 14&ndash;29), checking <code>RAM[KBD]</code> every cycle! Click <strong>Pause CPU</strong> then <strong>Step 1 Inst</strong> to watch each instruction one by one.
         </p>
         <div class="stat-grid">
           <div class="stat"><div class="label">PC (ROM)</div><div class="val" id="stPC">0</div></div>
+          <div class="stat"><div class="label">Next Inst</div><div class="val" id="stInst" style="color:var(--accent)">@16832</div></div>
           <div class="stat"><div class="label">A Register</div><div class="val" id="stA">0</div></div>
           <div class="stat"><div class="label">D Register</div><div class="val" id="stD">0</div></div>
           <div class="stat"><div class="label">RAM[KBD]</div><div class="val" id="stKBD">0</div></div>
@@ -575,9 +578,23 @@ function renderScreen() {
   loupeCtx.setLineDash([]);
 }
 
+let cpuPaused = false;
+
+function disassemble(inst) {
+  if ((inst & 0x8000) === 0) return '@' + (inst & 0x7FFF);
+  const compKey = ((inst >> 6) & 0x7F).toString(2).padStart(7, '0');
+  const dVal = (inst >> 3) & 0x7;
+  const jVal = inst & 0x7;
+  const dStr = DEST_REV[dVal] ? DEST_REV[dVal] + '=' : '';
+  const cStr = COMP_REV[compKey] || '?';
+  const jStr = JUMP_REV[jVal] ? ';' + JUMP_REV[jVal] : '';
+  return dStr + cStr + jStr;
+}
+
 function updateStats() {
   const kbd = ram[24576];
   document.getElementById('stPC').textContent = pc;
+  document.getElementById('stInst').textContent = disassemble(rom[pc] || 0);
   document.getElementById('stA').textContent = regA;
   document.getElementById('stD').textContent = regD;
   document.getElementById('stKBD').textContent = kbd;
@@ -586,6 +603,21 @@ function updateStats() {
   const badge = document.getElementById('kbdBadge');
   badge.textContent = kbd ? `KBD = ${kbd} (KEY PRESSED)` : 'KBD = 0 (Released)';
   badge.style.color = kbd ? '#34d399' : '#38bdf8';
+}
+
+function togglePause() {
+  cpuPaused = !cpuPaused;
+  const btn = document.getElementById('pauseBtn');
+  btn.textContent = cpuPaused ? 'Resume CPU' : 'Pause CPU';
+  btn.classList.toggle('active-key', cpuPaused);
+}
+
+function singleStep() {
+  if (!cpuPaused) togglePause();
+  ram[24576] = physicalKey || virtualKey || latchedKey;
+  stepCPU();
+  renderScreen();
+  updateStats();
 }
 
 function setVirtualKey(k) {
@@ -601,6 +633,7 @@ window.addEventListener('keydown', e => {
   physicalKey = e.key.length === 1 ? e.key.charCodeAt(0) : (e.keyCode || 32);
 });
 window.addEventListener('keyup', () => { physicalKey = 0; });
+window.addEventListener('blur', () => { physicalKey = 0; virtualKey = 0; });
 
 scrCanvas.addEventListener('mousemove', e => {
   const rect = scrCanvas.getBoundingClientRect();
@@ -660,7 +693,9 @@ function resetBoxK14() {
 
 function animLoop() {
   ram[24576] = physicalKey || virtualKey || latchedKey;
-  for (let i = 0; i < 2000; i++) stepCPU();
+  if (!cpuPaused) {
+    for (let i = 0; i < 2000; i++) stepCPU();
+  }
   renderScreen();
   updateStats();
   requestAnimationFrame(animLoop);

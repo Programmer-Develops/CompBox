@@ -7,7 +7,7 @@
 <style>
   @page {
     size: A4;
-    margin: 12mm 14mm;
+    margin: 10mm 12mm;
   }
   * { box-sizing: border-box; }
   body {
@@ -15,18 +15,18 @@
     color: #111827;
     background: #f3f4f6;
     margin: 0;
-    padding: 18px 0;
-    line-height: 1.42;
-    font-size: 9.4pt;
+    padding: 16px 0;
+    line-height: 1.38;
+    font-size: 9pt;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
   .page {
     width: 210mm;
     height: 297mm;
-    margin: 0 auto 18px;
+    margin: 0 auto 16px;
     background: #ffffff;
-    padding: 12mm 14mm;
+    padding: 10mm 12mm;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.10);
     display: flex;
     flex-direction: column;
@@ -38,14 +38,12 @@
     page-break-after: auto;
     break-after: auto;
   }
-  .page-body {
-    flex: 1 1 auto;
-  }
+  .page-body { flex: 1 1 auto; }
   @media print {
     body { background: #fff; padding: 0; }
     .page {
       width: auto;
-      height: 271mm;
+      height: 275mm;
       margin: 0;
       padding: 0;
       box-shadow: none;
@@ -54,25 +52,22 @@
   }
   .banner {
     border-bottom: 2.5px solid #1e3a8a;
-    padding-bottom: 8px;
-    margin-bottom: 10px;
+    padding-bottom: 6px;
+    margin-bottom: 8px;
   }
   .univ {
-    font-size: 8.8pt;
+    font-size: 8.5pt;
     font-weight: 700;
     color: #1e3a8a;
     text-transform: uppercase;
     letter-spacing: 0.6px;
   }
   h1 {
-    margin: 3px 0 3px;
-    font-size: 16.5pt;
+    margin: 2px 0;
+    font-size: 16pt;
     color: #0f172a;
   }
-  .subtitle {
-    font-size: 9.2pt;
-    color: #475569;
-  }
+  .subtitle { font-size: 8.8pt; color: #475569; }
   .student-box {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -80,53 +75,49 @@
     background: #eff6ff;
     border: 1.5px solid #bfdbfe;
     border-radius: 7px;
-    padding: 8px 11px;
-    margin: 9px 0 11px;
+    padding: 7px 10px;
+    margin: 7px 0 9px;
   }
-  .student-box .k { font-size: 7.5pt; color: #1e40af; text-transform: uppercase; font-weight: 700; }
-  .student-box .v { font-size: 10pt; font-weight: 700; color: #0f172a; }
+  .student-box .k { font-size: 7.2pt; color: #1e40af; text-transform: uppercase; font-weight: 700; }
+  .student-box .v { font-size: 9.6pt; font-weight: 700; color: #0f172a; }
   h2 {
-    font-size: 11.5pt;
+    font-size: 11pt;
     color: #1e3a8a;
     border-bottom: 1px solid #cbd5e1;
-    padding-bottom: 2.5px;
-    margin: 11px 0 6px;
+    padding-bottom: 2px;
+    margin: 9px 0 5px;
   }
   h2:first-child { margin-top: 0; }
-  h3 {
-    font-size: 9.8pt;
-    color: #0f172a;
-    margin: 8px 0 3px;
-  }
-  p { margin: 4px 0 6px; text-align: justify; }
-  ul { margin: 4px 0 7px 17px; padding: 0; }
-  li { margin-bottom: 3px; }
+  h3 { font-size: 9.4pt; color: #0f172a; margin: 6px 0 2px; }
+  p { margin: 3px 0 5px; text-align: justify; }
+  ul { margin: 3px 0 6px 16px; padding: 0; }
+  li { margin-bottom: 2.5px; }
   table {
     width: 100%;
     border-collapse: collapse;
-    margin: 6px 0 9px;
-    font-size: 8.7pt;
+    margin: 5px 0 7px;
+    font-size: 8.3pt;
   }
   th, td {
     border: 1px solid #cbd5e1;
-    padding: 4.5px 7px;
+    padding: 3.5px 6px;
     text-align: left;
   }
   th { background: #f1f5f9; color: #0f172a; font-weight: 700; }
   code {
     font-family: Consolas, "Liberation Mono", Menlo, monospace;
     background: #f1f5f9;
-    padding: 0.5px 3.5px;
+    padding: 0.5px 3px;
     border-radius: 3px;
-    font-size: 8.4pt;
+    font-size: 8pt;
   }
   pre {
     background: #0f172a;
     color: #e2e8f0;
-    padding: 8px 10px;
+    padding: 7px 10px;
     border-radius: 6px;
     font-family: Consolas, "Liberation Mono", monospace;
-    font-size: 7.7pt;
+    font-size: 7.8pt;
     white-space: pre-wrap;
     word-break: break-word;
     overflow: visible;
@@ -134,19 +125,20 @@
     margin: 5px 0 8px;
   }
   .pass { color: #15803d; font-weight: 700; }
+
+  /* Large, high-visibility screenshot layout */
   .shot-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin: 7px 0 0;
+    gap: 7px;
+    margin: 6px 0 0;
   }
   .shot-box {
-    border: 1.2px dashed #94a3b8;
-    border-radius: 6px;
-    padding: 6px;
+    border: 1px solid #94a3b8;
+    border-radius: 5px;
+    padding: 4px;
     text-align: center;
     background: #f8fafc;
-    min-height: 112px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -154,28 +146,36 @@
   }
   .shot-box.wide {
     grid-column: span 2;
-    min-height: 132px;
   }
   .shot-box img {
-    max-width: 100%;
-    max-height: 155px;
+    width: 100%;
+    height: auto;
+    max-height: 245px;
+    object-fit: contain;
     border: 1px solid #cbd5e1;
-    border-radius: 4px;
+    border-radius: 3px;
     display: block;
-    margin: 0 auto 4px;
+    margin: 0 auto 3px;
   }
   .shot-box.wide img {
-    max-height: 195px;
+    width: auto;
+    max-width: 100%;
+    max-height: 360px;
+  }
+  .shot-box.wide-box img {
+    width: auto;
+    max-width: 100%;
+    max-height: 375px;
   }
   .shot-box .cap {
-    font-size: 8pt;
-    color: #334155;
+    font-size: 7.9pt;
+    color: #1e293b;
     font-weight: 600;
   }
   .shot-placeholder {
     font-size: 7.8pt;
     color: #64748b;
-    padding: 8px 6px;
+    padding: 12px 6px;
   }
   .pick-btn {
     margin-top: 5px;
@@ -188,47 +188,42 @@
     font-weight: 600;
     cursor: pointer;
   }
-  .pick-btn:hover { background: #1d4ed8; }
-  .shot-box.dragover {
-    border-color: #2563eb;
-    background: #eff6ff;
-  }
   .callout {
     background: #fefce8;
     border-left: 4px solid #eab308;
-    padding: 7px 10px;
+    padding: 6px 10px;
     border-radius: 0 6px 6px 0;
-    margin: 6px 0 0;
-    font-size: 8.9pt;
+    margin: 5px 0 0;
+    font-size: 8.5pt;
     text-align: justify;
   }
   .footer {
     flex-shrink: 0;
     display: flex;
     justify-content: space-between;
-    font-size: 8pt;
+    font-size: 7.8pt;
     color: #64748b;
     border-top: 1px solid #cbd5e1;
-    padding-top: 5px;
-    margin-top: 8px;
+    padding-top: 4px;
+    margin-top: 6px;
   }
   .toolbar {
     width: 210mm;
-    margin: 0 auto 14px;
+    margin: 0 auto 12px;
     background: #1e293b;
     color: #f8fafc;
-    padding: 10px 16px;
+    padding: 9px 14px;
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 9.2pt;
+    font-size: 9pt;
   }
   .toolbar button {
     background: #38bdf8;
     color: #0f172a;
     border: none;
-    padding: 7px 14px;
+    padding: 6px 13px;
     border-radius: 6px;
     font-weight: 700;
     cursor: pointer;
@@ -238,7 +233,7 @@
 <body>
 
 <div class="toolbar no-print">
-  <div><strong>ZOSIMA Submission Report (4 Pages)</strong> — Drop your 6 PNGs into <code>report/screenshots/</code> and run <code>.\report\build_pdf.ps1</code> (or Print &rarr; Save as PDF).</div>
+  <div><strong>ZOSIMA Submission Report (4 Pages)</strong> — Large high-visibility screenshots embedded.</div>
   <button onclick="window.print()">Print / Save as PDF</button>
 </div>
 
@@ -285,35 +280,43 @@
     <h3>2.1 Memory.hdl (Memory-Mapped I/O Router)</h3>
     <p>
       The Hack data address space spans 15 bits (<code>0x0000–0x6000</code>). Using the top two bits
-      <code>address[13..14]</code>, a <code>DMux4Way</code> routes the write-enable signal <code>load</code>
-      exclusively to the active device: <code>00</code> and <code>01</code> are merged with an <code>Or</code>
-      gate to drive <code>RAM16K</code> (<code>address[0..13]</code>), <code>10</code> drives <code>Screen</code>
-      (<code>address[0..12]</code>), and <code>11</code> maps to the read-only <code>Keyboard</code>. A
-      <code>Mux4Way16</code> selects the matching device output.
+      <code>address[13..14]</code>, a <code>DMux4Way</code> routes <code>load</code> exclusively to the active device:
+      <code>00</code> and <code>01</code> merge via an <code>Or</code> gate into <code>RAM16K</code>
+      (<code>address[0..13]</code>), <code>10</code> drives <code>Screen</code> (<code>address[0..12]</code>), and
+      <code>11</code> maps to the read-only <code>Keyboard</code>. A <code>Mux4Way16</code> selects the active output.
     </p>
 
     <h3>2.2 CPU.hdl (Central Processing Unit)</h3>
     <p>
       <code>CPU.hdl</code> decodes the 16-bit instruction using <code>instruction[15]</code> as the opcode
       (<code>0</code> = A-instruction, <code>1</code> = C-instruction). A <code>Mux16</code> selects either the
-      raw instruction or the ALU output for <code>ARegister</code>, which loads on every A-instruction or whenever
-      <code>instruction[15] &amp; instruction[5]</code> (<code>d1</code>) is asserted. Both <code>DRegister</code>
-      loading (<code>d2</code>) and <code>writeM</code> (<code>d3</code>) are gated with <code>instruction[15]</code>
-      so A-instructions never cause unintended side effects. Bit <code>instruction[12]</code> selects between
-      <code>A</code> and <code>inM</code> for the ALU's <code>y</code>-input, bits <code>11..6</code> drive
-      <code>zx, nx, zy, ny, f, no</code>, and jump bits <code>2..0</code> are evaluated against <code>ng</code>,
-      <code>zr</code>, and <code>pos = NOT(zr OR ng)</code> to drive <code>PC.load</code>.
+      instruction or ALU output for <code>ARegister</code> (loaded on A-instructions or when
+      <code>instruction[15] &amp; instruction[5]</code>). <code>DRegister</code> loading (<code>d2</code>) and
+      <code>writeM</code> (<code>d3</code>) are gated with <code>instruction[15]</code>. Bit <code>instruction[12]</code>
+      selects <code>A</code> vs <code>inM</code> for the ALU, bits <code>11..6</code> drive <code>zx..no</code>, and
+      jump bits <code>2..0</code> check <code>ng</code>, <code>zr</code>, and <code>pos = NOT(zr OR ng)</code>.
     </p>
 
-    <h3>2.3 Computer.hdl &amp; Built-In Chips Disclosure</h3>
+    <h3>2.3 Computer.hdl, Built-In Chips Disclosure &amp; Official Test Summary</h3>
     <p>
-      <code>Computer.hdl</code> connects <code>ROM32K</code>, <code>CPU</code>, and <code>Memory</code> in a
-      Harvard architecture. Per the official Project 5 test scripts (<code>CPU.tst</code>, <code>Memory.tst</code>,
-      <code>ComputerAdd.tst</code>, <code>ComputerMax.tst</code>, <code>ComputerRect.tst</code>), the built-in
-      <code>ARegister</code>, <code>DRegister</code>, <code>ALU</code>, <code>PC</code>, <code>RAM16K</code>,
-      <code>ROM32K</code>, <code>Screen</code>, <code>Keyboard</code>, and primitive combinational gates are used so
-      the official test scripts can directly inspect internal register and memory states.
+      <code>Computer.hdl</code> connects <code>ROM32K</code>, <code>CPU</code>, and <code>Memory</code> (Harvard
+      architecture). Per the official Project 5 test scripts, built-in <code>ARegister</code>, <code>DRegister</code>,
+      <code>ALU</code>, <code>PC</code>, <code>RAM16K</code>, <code>ROM32K</code>, <code>Screen</code>,
+      <code>Keyboard</code>, and primitive gates are used so the scripts can directly inspect internal registers and I/O:
     </p>
+
+    <table>
+      <thead>
+        <tr><th>Official Test Script</th><th>Target Chip</th><th>Verification Scope</th><th>Result</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>CPU.tst</code></td><td><code>CPU.hdl</code></td><td>A/C decoding, ALU ops, all 7 jumps, reset</td><td class="pass">PASS — Comparison ended successfully</td></tr>
+        <tr><td><code>Memory.tst</code></td><td><code>Memory.hdl</code></td><td>Lower/Upper RAM, Screen, Keyboard ('K','Y')</td><td class="pass">PASS — Comparison ended successfully</td></tr>
+        <tr><td><code>ComputerAdd.tst</code></td><td><code>Computer.hdl</code></td><td>Executes <code>Add.hack</code> (2+3=5 in RAM[0]) + reset</td><td class="pass">PASS — Comparison ended successfully</td></tr>
+        <tr><td><code>ComputerMax.tst</code></td><td><code>Computer.hdl</code></td><td>Executes <code>Max.hack</code> with branching</td><td class="pass">PASS — Comparison ended successfully</td></tr>
+        <tr><td><code>ComputerRect.tst</code></td><td><code>Computer.hdl</code></td><td>Executes <code>Rect.hack</code> (16&times;4 rectangle)</td><td class="pass">PASS — Comparison ended successfully</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <div class="footer">
@@ -326,65 +329,31 @@
 <!-- ======================= PAGE 2 ======================= -->
 <div class="page">
   <div class="page-body">
-    <h2>2.4 Part A — Official Hardware Simulator Verification</h2>
-    <p>
-      All three HDL chips (<code>CPU.hdl</code>, <code>Memory.hdl</code>, and <code>Computer.hdl</code>) were
-      verified against the official Nand2Tetris Project 5 test scripts in the Hardware Simulator. Every test
-      completed with zero comparison errors:
-    </p>
-
-    <table>
-      <thead>
-        <tr><th>Official Test Script</th><th>Target Chip</th><th>Verification Scope</th><th>Result</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><code>CPU.tst</code></td><td><code>CPU.hdl</code></td><td>A/C decoding, ALU ops, all 7 jumps, reset</td><td class="pass">PASS — Comparison ended successfully</td></tr>
-        <tr><td><code>Memory.tst</code></td><td><code>Memory.hdl</code></td><td>Lower/Upper RAM, Screen, Keyboard ('K','Y'), isolation</td><td class="pass">PASS — Comparison ended successfully</td></tr>
-        <tr><td><code>ComputerAdd.tst</code></td><td><code>Computer.hdl</code></td><td>Executes <code>Add.hack</code> (2+3=5 in RAM[0]) + reset</td><td class="pass">PASS — Comparison ended successfully</td></tr>
-        <tr><td><code>ComputerMax.tst</code></td><td><code>Computer.hdl</code></td><td>Executes <code>Max.hack</code> with conditional branching</td><td class="pass">PASS — Comparison ended successfully</td></tr>
-        <tr><td><code>ComputerRect.tst</code></td><td><code>Computer.hdl</code></td><td>Executes <code>Rect.hack</code> drawing a 16&times;4 rectangle</td><td class="pass">PASS — Comparison ended successfully</td></tr>
-      </tbody>
-    </table>
-
+    <h2>2.4 Part A — Official Hardware Simulator Verification Screenshots</h2>
     <div class="shot-grid">
       <div class="shot-box" data-slot="1">
         <img src="screenshots/1_cpu_tst.png" alt="CPU.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-        <div class="shot-placeholder" style="display:none;">
-          Drop PNG here or click below to attach <code>CPU.tst</code> screenshot<br>
-          <button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Screenshot (PNG/JPG)</button>
-        </div>
+        <div class="shot-placeholder" style="display:none;"><button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose CPU.tst Screenshot</button></div>
         <div class="cap">Figure 1: Official Hardware Simulator — <code>CPU.tst</code> passed</div>
       </div>
       <div class="shot-box" data-slot="2">
         <img src="screenshots/2_memory_tst.png" alt="Memory.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-        <div class="shot-placeholder" style="display:none;">
-          Drop PNG here or click below to attach <code>Memory.tst</code> screenshot<br>
-          <button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Screenshot (PNG/JPG)</button>
-        </div>
-        <div class="cap">Figure 2: Official Hardware Simulator — <code>Memory.tst</code> passed</div>
+        <div class="shot-placeholder" style="display:none;"><button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Memory.tst Screenshot</button></div>
+        <div class="cap">Figure 2: Official Hardware Simulator — <code>Memory.tst</code> passed ('K'/'Y' + Screen)</div>
       </div>
       <div class="shot-box" data-slot="3">
         <img src="screenshots/3_computer_add.png" alt="ComputerAdd.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-        <div class="shot-placeholder" style="display:none;">
-          Drop PNG here or click below to attach <code>ComputerAdd.tst</code> screenshot<br>
-          <button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Screenshot (PNG/JPG)</button>
-        </div>
+        <div class="shot-placeholder" style="display:none;"><button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose ComputerAdd.tst Screenshot</button></div>
         <div class="cap">Figure 3: Official Hardware Simulator — <code>ComputerAdd.tst</code> passed</div>
       </div>
       <div class="shot-box" data-slot="4">
         <img src="screenshots/4_computer_max.png" alt="ComputerMax.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-        <div class="shot-placeholder" style="display:none;">
-          Drop PNG here or click below to attach <code>ComputerMax.tst</code> screenshot<br>
-          <button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Screenshot (PNG/JPG)</button>
-        </div>
+        <div class="shot-placeholder" style="display:none;"><button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose ComputerMax.tst Screenshot</button></div>
         <div class="cap">Figure 4: Official Hardware Simulator — <code>ComputerMax.tst</code> passed</div>
       </div>
       <div class="shot-box wide" data-slot="5">
         <img src="screenshots/5_computer_rect.png" alt="ComputerRect.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-        <div class="shot-placeholder" style="display:none;">
-          Drop PNG here or click below to attach <code>ComputerRect.tst</code> screenshot (Screen view enabled)<br>
-          <button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Screenshot (PNG/JPG)</button>
-        </div>
+        <div class="shot-placeholder" style="display:none;"><button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose ComputerRect.tst Screenshot</button></div>
         <div class="cap">Figure 5: Official Hardware Simulator — <code>ComputerRect.tst</code> passed (Screen view enabled)</div>
       </div>
     </div>
@@ -408,7 +377,7 @@
     </p>
     <ul>
       <li><strong>Symbol Table Initialization:</strong> Preloads all 23 predefined Hack symbols (<code>SP=0</code>, <code>LCL=1</code>, <code>ARG=2</code>, <code>THIS=3</code>, <code>THAT=4</code>, <code>R0–R15</code>, <code>SCREEN=16384</code>, <code>KBD=24576</code>).</li>
-      <li><strong>Pass 1 (Label Resolution &amp; Duplicate Detection):</strong> Strips <code>//</code> comments and all whitespace, ignores blank lines, and maps each pseudo-command <code>(LABEL)</code> to the current ROM instruction counter without incrementing the counter.</li>
+      <li><strong>Pass 1 (Label Resolution &amp; Duplicate Detection):</strong> Strips <code>//</code> comments and whitespace, ignores blank lines, and maps each pseudo-command <code>(LABEL)</code> to the current ROM instruction counter without incrementing the counter.</li>
       <li><strong>Pass 2 (Code Emission &amp; Variable Allocation):</strong> Translates A-instructions (<code>@value</code> or <code>@symbol</code>, allocating new variables sequentially from <code>RAM[16]</code>) into <code>0</code> + 15-bit binary, and C-instructions (<code>[dest=]comp[;jump]</code>) into <code>111</code> + 7-bit <code>comp</code> + 3-bit <code>dest</code> + 3-bit <code>jump</code>.</li>
     </ul>
 
@@ -466,41 +435,32 @@ OVERALL RESULT: ALL CHECKS PASSED (100%)</pre>
   <div class="page-body">
     <h2>4. Part C — Interactive Box Program (<code>Box.asm</code> &rarr; <code>Box.hack</code>)</h2>
     <p>
-      <code>capstone/Box.asm</code> draws a solid black rectangle on the Hack display while any key is held down and
-      clears it immediately when the key is released. For <strong><code>K = 14</code></strong>:
-    </p>
-    <ul>
-      <li><strong>Geometry:</strong> Starts at Row <code>14</code>, height = <code>20</code> rows (rows <code>14..33</code>), width = <code>16 &times; ((14 mod 4) + 1) = 48</code> pixels (<code>3</code> words per row from the left edge).</li>
-      <li><strong>Screen Memory Addressing:</strong> Each screen row occupies <code>32</code> 16-bit words (<code>512 / 16</code>). Row <code>14</code> starts at <code>16384 + 32 &times; 14 = 16832</code>, and the final row (row <code>33</code>) spans words <code>17440, 17441, 17442</code> (60 words = 960 pixels total).</li>
-      <li><strong>Flicker-Free Design:</strong> Stores <code>start_addr = 16832</code>, <code>height = 20</code>, <code>width = 3</code>, and <code>prev_color = 0</code>. In <code>MAIN_LOOP</code>, it polls <code>RAM[KBD]</code> (<code>24576</code>) and repaints the 60 words only on state transitions. An outer loop increments <code>row_base += 32</code> independently of <code>width</code>, so moving or resizing requires a 1-number edit.</li>
-    </ul>
-
-    <h3>4.1 Official CPU Emulator Verification (Assembled by My Own <code>assembler.py</code>)</h3>
-    <p>
-      <code>Box.asm</code> was assembled directly by <code>capstone/assembler.py</code> into 77 instructions
-      (<code>Box.hack</code>) and verified in the official <code>CPUEmulator</code> across four phases, confirming all
-      60 box words toggle cleanly between <code>-1</code> and <code>0</code> while adjacent guard words stay untouched:
+      <code>capstone/Box.asm</code> (assembled by my own <code>assembler.py</code> into 77 instructions in
+      <code>Box.hack</code>) displays a solid black box on the Hack screen while any key is pressed
+      (<code>RAM[KBD] != 0</code>) and clears it when released (<code>RAM[KBD] == 0</code>). For <strong><code>K = 14</code></strong>:
+      starts at <strong>Row 14</strong> (<code>16384 + 32 &times; 14 = RAM[16832]</code>), <strong>20 rows tall</strong>
+      (rows <code>14..33</code>), and <strong><code>16 &times; ((14 mod 4) + 1) = 48</code> pixels wide</strong> (<code>3</code> words
+      from the left edge; 60 words = 960 pixels total). State tracking via <code>prev_color</code> prevents flicker,
+      and storing <code>start_addr</code>, <code>height</code>, and <code>width</code> as top-level variables makes
+      live viva modifications a single-number edit.
     </p>
 
     <table>
       <thead>
-        <tr><th>Phase</th><th><code>RAM[24576]</code> (KBD)</th><th>Row 13 Guard (<code>16800</code>)</th><th>Row 14 Box (<code>16832..16834</code>)</th><th>Col 3 Guard (<code>16835</code>)</th><th>Row 33 Box (<code>17440..17442</code>)</th><th>Row 34 Guard (<code>17472</code>)</th></tr>
+        <tr><th>Test Phase</th><th><code>RAM[24576]</code> (KBD)</th><th>Row 13 Guard (<code>16800</code>)</th><th>Row 14 Box (<code>16832..16834</code>)</th><th>Col 3 Guard (<code>16835</code>)</th><th>Row 33 Box (<code>17440..17442</code>)</th><th>Row 34 Guard (<code>17472</code>)</th></tr>
       </thead>
       <tbody>
-        <tr><td>1. Initial (No key)</td><td><code>0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td></tr>
+        <tr><td>1. Idle (No key)</td><td><code>0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td></tr>
         <tr><td>2. Key <code>'A'</code> held</td><td><code>65</code></td><td><code>0</code></td><td><strong><code>-1, -1, -1</code></strong></td><td><code>0</code></td><td><strong><code>-1, -1, -1</code></strong></td><td><code>0</code></td></tr>
-        <tr><td>3. Key released</td><td><code>0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td></tr>
+        <tr><td>3. Released</td><td><code>0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td><td><code>0, 0, 0</code></td><td><code>0</code></td></tr>
         <tr><td>4. Space held</td><td><code>32</code></td><td><code>0</code></td><td><strong><code>-1, -1, -1</code></strong></td><td><code>0</code></td><td><strong><code>-1, -1, -1</code></strong></td><td><code>0</code></td></tr>
       </tbody>
     </table>
 
     <div class="shot-grid">
-      <div class="shot-box wide" data-slot="6">
+      <div class="shot-box wide wide-box" data-slot="6">
         <img src="screenshots/6_box_cpu_emulator.png" alt="Box.hack running in CPU Emulator" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-        <div class="shot-placeholder" style="display:none;">
-          Drop PNG here or click below to attach <code>Box.hack</code> CPUEmulator screenshot (48&times;20 black box at row 14)<br>
-          <button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Screenshot (PNG/JPG)</button>
-        </div>
+        <div class="shot-placeholder" style="display:none;"><button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Box.hack CPUEmulator Screenshot</button></div>
         <div class="cap">Figure 6: Official CPU Emulator running <code>Box.hack</code> (K = 14: 48&times;20 black box at Row 14, left edge, while key is pressed)</div>
       </div>
     </div>
@@ -512,12 +472,12 @@ OVERALL RESULT: ALL CHECKS PASSED (100%)</pre>
       only <code>Not(in=aluNeg, out=aluPos)</code>, forgetting that when the ALU output is <code>0</code>,
       <code>aluNeg</code> is also <code>0</code> — causing <code>D;JGT</code> to falsely jump on zero. Similarly,
       failing to gate <code>writeM</code> and <code>pcLoad</code> with <code>instruction[15]</code> allowed
-      A-instructions whose constant bits happened to contain <code>1</code>s (such as <code>@16832</code> or
-      <code>@3</code>) to trigger spurious memory writes or jumps. Debugging against <code>CPU.tst</code> pinpointed
-      the exact cycle where <code>D=0</code> followed by <code>D;JGT</code> diverged from <code>CPU.cmp</code>. Fixing
-      it with <code>Or(a=aluZero, b=aluNeg, out=aluLteZero)</code> &rarr; <code>Not(in=aluLteZero, out=aluPos)</code>
-      and gating all C-instruction control wires with <code>instruction[15]</code> made <code>CPU.tst</code> and all
-      three <code>Computer*.tst</code> suites pass 100%.
+      A-instructions whose constant bits contained <code>1</code>s (such as <code>@16832</code> or <code>@3</code>) to
+      trigger spurious memory writes or jumps. Debugging against <code>CPU.tst</code> pinpointed the exact cycle where
+      <code>D=0</code> followed by <code>D;JGT</code> diverged from <code>CPU.cmp</code>. Fixing it with
+      <code>Or(a=aluZero, b=aluNeg, out=aluLteZero)</code> &rarr; <code>Not(in=aluLteZero, out=aluPos)</code> and
+      gating all C-instruction control wires with <code>instruction[15]</code> made <code>CPU.tst</code> and all three
+      <code>Computer*.tst</code> suites pass 100%.
     </div>
   </div>
 
@@ -532,7 +492,6 @@ OVERALL RESULT: ALL CHECKS PASSED (100%)</pre>
 <script>
   let activeBox = null;
   const fileInput = document.getElementById('shotFileInput');
-
   function applyImageFile(box, file) {
     if (!file || !file.type.startsWith('image/')) return;
     const reader = new FileReader();
@@ -542,32 +501,13 @@ OVERALL RESULT: ALL CHECKS PASSED (100%)</pre>
       img.src = reader.result;
       img.style.display = 'block';
       img.style.cursor = 'pointer';
-      img.title = 'Click to replace screenshot';
       img.onclick = () => { activeBox = box; fileInput.value = ''; fileInput.click(); };
       ph.style.display = 'none';
     };
     reader.readAsDataURL(file);
   }
-
-  function pickShot(btn) {
-    activeBox = btn.closest('.shot-box');
-    fileInput.value = '';
-    fileInput.click();
-  }
-
-  fileInput.addEventListener('change', () => {
-    if (activeBox && fileInput.files[0]) applyImageFile(activeBox, fileInput.files[0]);
-  });
-
-  document.querySelectorAll('.shot-box').forEach(box => {
-    box.addEventListener('dragover', e => { e.preventDefault(); box.classList.add('dragover'); });
-    box.addEventListener('dragleave', () => box.classList.remove('dragover'));
-    box.addEventListener('drop', e => {
-      e.preventDefault();
-      box.classList.remove('dragover');
-      if (e.dataTransfer.files[0]) applyImageFile(box, e.dataTransfer.files[0]);
-    });
-  });
+  function pickShot(btn) { activeBox = btn.closest('.shot-box'); fileInput.value = ''; fileInput.click(); }
+  fileInput.addEventListener('change', () => { if (activeBox && fileInput.files[0]) applyImageFile(activeBox, fileInput.files[0]); });
 </script>
 </body>
 </html>

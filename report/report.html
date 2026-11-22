@@ -175,7 +175,23 @@
   .shot-placeholder {
     font-size: 7.8pt;
     color: #64748b;
-    padding: 10px 6px;
+    padding: 8px 6px;
+  }
+  .pick-btn {
+    margin-top: 5px;
+    background: #1e3a8a;
+    color: #fff;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-size: 7.8pt;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .pick-btn:hover { background: #1d4ed8; }
+  .shot-box.dragover {
+    border-color: #2563eb;
+    background: #eff6ff;
   }
   .callout {
     background: #fefce8;
@@ -331,29 +347,44 @@
     </table>
 
     <div class="shot-grid">
-      <div class="shot-box">
+      <div class="shot-box" data-slot="1">
         <img src="screenshots/1_cpu_tst.png" alt="CPU.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-        <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/1_cpu_tst.png</code><br>(Run <code>.\open_official_gui.ps1 -Tool hw</code> &rarr; <code>CPU.tst</code>)</div>
+        <div class="shot-placeholder" style="display:none;">
+          Drop PNG here or click below to attach <code>CPU.tst</code> screenshot<br>
+          <button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Screenshot (PNG/JPG)</button>
+        </div>
         <div class="cap">Figure 1: Official Hardware Simulator — <code>CPU.tst</code> passed</div>
       </div>
-      <div class="shot-box">
+      <div class="shot-box" data-slot="2">
         <img src="screenshots/2_memory_tst.png" alt="Memory.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-        <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/2_memory_tst.png</code><br>(<code>Memory.tst</code> with Screen view + 'K'/'Y' keys)</div>
+        <div class="shot-placeholder" style="display:none;">
+          Drop PNG here or click below to attach <code>Memory.tst</code> screenshot<br>
+          <button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Screenshot (PNG/JPG)</button>
+        </div>
         <div class="cap">Figure 2: Official Hardware Simulator — <code>Memory.tst</code> passed</div>
       </div>
-      <div class="shot-box">
+      <div class="shot-box" data-slot="3">
         <img src="screenshots/3_computer_add.png" alt="ComputerAdd.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-        <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/3_computer_add.png</code><br>(<code>ComputerAdd.tst</code>)</div>
+        <div class="shot-placeholder" style="display:none;">
+          Drop PNG here or click below to attach <code>ComputerAdd.tst</code> screenshot<br>
+          <button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Screenshot (PNG/JPG)</button>
+        </div>
         <div class="cap">Figure 3: Official Hardware Simulator — <code>ComputerAdd.tst</code> passed</div>
       </div>
-      <div class="shot-box">
+      <div class="shot-box" data-slot="4">
         <img src="screenshots/4_computer_max.png" alt="ComputerMax.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-        <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/4_computer_max.png</code><br>(<code>ComputerMax.tst</code>)</div>
+        <div class="shot-placeholder" style="display:none;">
+          Drop PNG here or click below to attach <code>ComputerMax.tst</code> screenshot<br>
+          <button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Screenshot (PNG/JPG)</button>
+        </div>
         <div class="cap">Figure 4: Official Hardware Simulator — <code>ComputerMax.tst</code> passed</div>
       </div>
-      <div class="shot-box wide">
+      <div class="shot-box wide" data-slot="5">
         <img src="screenshots/5_computer_rect.png" alt="ComputerRect.tst pass screenshot" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-        <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/5_computer_rect.png</code><br>(<code>ComputerRect.tst</code> showing 16&times;4 black rectangle on Screen view)</div>
+        <div class="shot-placeholder" style="display:none;">
+          Drop PNG here or click below to attach <code>ComputerRect.tst</code> screenshot (Screen view enabled)<br>
+          <button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Screenshot (PNG/JPG)</button>
+        </div>
         <div class="cap">Figure 5: Official Hardware Simulator — <code>ComputerRect.tst</code> passed (Screen view enabled)</div>
       </div>
     </div>
@@ -464,9 +495,12 @@ OVERALL RESULT: ALL CHECKS PASSED (100%)</pre>
     </table>
 
     <div class="shot-grid">
-      <div class="shot-box wide">
+      <div class="shot-box wide" data-slot="6">
         <img src="screenshots/6_box_cpu_emulator.png" alt="Box.hack running in CPU Emulator" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-        <div class="shot-placeholder" style="display:none;">Place <code>report/screenshots/6_box_cpu_emulator.png</code><br>(Run <code>.\open_official_gui.ps1 -Tool cpu</code> &rarr; load <code>capstone\Box.hack</code> &rarr; hold any key &rarr; screenshot the 48&times;20 black box at row 14)</div>
+        <div class="shot-placeholder" style="display:none;">
+          Drop PNG here or click below to attach <code>Box.hack</code> CPUEmulator screenshot (48&times;20 black box at row 14)<br>
+          <button type="button" class="pick-btn no-print" onclick="pickShot(this)">Choose Screenshot (PNG/JPG)</button>
+        </div>
         <div class="cap">Figure 6: Official CPU Emulator running <code>Box.hack</code> (K = 14: 48&times;20 black box at Row 14, left edge, while key is pressed)</div>
       </div>
     </div>
@@ -494,5 +528,46 @@ OVERALL RESULT: ALL CHECKS PASSED (100%)</pre>
   </div>
 </div>
 
+<input type="file" id="shotFileInput" accept="image/*" style="display:none" />
+<script>
+  let activeBox = null;
+  const fileInput = document.getElementById('shotFileInput');
+
+  function applyImageFile(box, file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = box.querySelector('img');
+      const ph = box.querySelector('.shot-placeholder');
+      img.src = reader.result;
+      img.style.display = 'block';
+      img.style.cursor = 'pointer';
+      img.title = 'Click to replace screenshot';
+      img.onclick = () => { activeBox = box; fileInput.value = ''; fileInput.click(); };
+      ph.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function pickShot(btn) {
+    activeBox = btn.closest('.shot-box');
+    fileInput.value = '';
+    fileInput.click();
+  }
+
+  fileInput.addEventListener('change', () => {
+    if (activeBox && fileInput.files[0]) applyImageFile(activeBox, fileInput.files[0]);
+  });
+
+  document.querySelectorAll('.shot-box').forEach(box => {
+    box.addEventListener('dragover', e => { e.preventDefault(); box.classList.add('dragover'); });
+    box.addEventListener('dragleave', () => box.classList.remove('dragover'));
+    box.addEventListener('drop', e => {
+      e.preventDefault();
+      box.classList.remove('dragover');
+      if (e.dataTransfer.files[0]) applyImageFile(box, e.dataTransfer.files[0]);
+    });
+  });
+</script>
 </body>
 </html>

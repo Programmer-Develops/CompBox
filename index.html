@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CompBox — Hack Computer Simulator (K = 14)</title>
+<style>
+  :root {
+    --bg: #f8fafc;
+    --panel: #ffffff;
+    --border: #d1d5db;
+    --text: #111827;
+    --muted: #4b5563;
+    --accent: #1d4ed8;
+    --mono: Consolas, "Liberation Mono", Menlo, monospace;
+    --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.45;
+  }
+  header {
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+  }
+  header h1 { margin: 0; font-size: 1.15rem; font-weight: 700; }
+  header .meta { font-size: 0.85rem; color: var(--muted); font-family: var(--mono); }
+  main {
+    max-width: 1120px;
+    margin: 20px auto;
+    padding: 0 20px 32px;
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .panel h2 {
+    margin: 0 0 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 6px;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .tag.active { color: #15803d; }
+  canvas#hackScreen {
+    width: 100%;
+    max-width: 512px;
+    aspect-ratio: 2 / 1;
+    image-rendering: pixelated;
+    background: #ffffff;
+    border: 1px solid #374151;
+    display: block;
+    cursor: crosshair;
+  }
+  .hover-bar {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 6px;
+    min-height: 1.2em;
+  }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  button {
+    font-family: var(--sans);
+    font-size: 0.84rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    background: #f3f4f6;
+    color: var(--text);
+    cursor: pointer;
+  }
+  button:hover { background: #e5e7eb; }
+  button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+  }
+  button.primary:hover { background: #1e40af; }
+  button.on {
+    background: #15803d;
+    border-color: #15803d;
+    color: #ffffff;
+  }
+  .regs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .reg {
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 5px;
+    padding: 7px 9px;
+    font-family: var(--mono);
+  }
+  .reg .k { font-size: 0.7rem; color: var(--muted); }
+  .reg .v { font-size: 0.95rem; font-weight: 700; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    font-family: var(--mono);
+  }
+  th, td {
+    border: 1px solid #e5e7eb;
+    padding: 5px 8px;
+    text-align: left;
+  }
+  th { background: #f9fafb; color: var(--muted); font-weight: 600; }
+  .mem-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+  input[type="number"] {
+    font-family: var(--mono);
+    padding: 5px 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    width: 110px;
+  }
+  canvas#loupe {
+    width: 100%;
+    max-width: 320px;
+    image-rendering: pixelated;
+    border: 1px solid #374151;
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CompBox — Hack Computer &amp; Box.hack Simulator</h1>
+  <div class="meta">Shantanu Pandya | 2501730014 | K = 14 | Box: 48&times;20 px @ Row 14 (RAM[16832])</div>
+</header>
+
+<main>
+  <div>
+    <div class="panel">
+      <h2>
+        <span>Hack Screen (512 &times; 256) — Running <code>capstone/Box.hack</code></span>
+        <span class="tag" id="kbdBadge">RAM[KBD] = 0</span>
+      </h2>
+      <canvas id="hackScreen" width="512" height="256"></canvas>
+      <div class="hover-bar" id="hoverInfo">Hover over the screen to inspect (row, col) and Screen RAM address.</div>
+
+      <div class="controls">
+        <button class="primary" id="holdKeyBtn"
+          onmousedown="setVirtualKey(65)" onmouseup="setVirtualKey(0)" onmouseleave="setVirtualKey(0)"
+          ontouchstart="setVirtualKey(65)" ontouchend="setVirtualKey(0)">
+          Hold Key ('A' = 65)
+        </button>
+        <button id="toggleKeyBtn" onclick="toggleLatchKey()">Toggle Key Hold</button>
+        <button id="pauseBtn" onclick="togglePause()">Pause</button>
+        <button onclick="singleStep()">Step 1 Inst</button>
+        <button onclick="resetCPU()">Reset</button>
+      </div>
+
+      <div class="regs">
+        <div class="reg"><div class="k">PC</div><div class="v" id="stPC">0</div></div>
+        <div class="reg"><div class="k">Next Inst</div><div class="v" id="stInst">@16832</div></div>
+        <div class="reg"><div class="k">A</div><div class="v" id="stA">0</div></div>
+        <div class="reg"><div class="k">D</div><div class="v" id="stD">0</div></div>
+        <div class="reg"><div class="k">RAM[24576]</div><div class="v" id="stKBD">0</div></div>
+        <div class="reg"><div class="k">RAM[16832]</div><div class="v" id="stTop">0</div></div>
+        <div class="reg"><div class="k">RAM[17442]</div><div class="v" id="stBot">0</div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2><span>Memory.hdl Address Map</span><span class="tag" id="memSegTag">Screen</span></h2>
+      <div class="mem-row">
+        <label for="memAddr" style="font-size:0.84rem;">Address (0–24576):</label>
+        <input type="number" id="memAddr" min="0" max="24576" value="16832" oninput="renderMem()" />
+        <button onclick="setMem(0)">RAM[0]</button>
+        <button onclick="setMem(16384)">SCREEN</button>
+        <button onclick="setMem(16832)">Row 14</button>
+        <button onclick="setMem(24576)">KBD</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Hex</th><th>15-bit Binary</th><th>address[13..14]</th><th>Mapped Device</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="mHex">0x41C0</td>
+            <td id="mBin">10 0000111000000</td>
+            <td id="mSel">10</td>
+            <td id="mDev">Screen[448] (Row 14, Word 0)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <div class="panel">
+      <h2><span>Top-Left 4&times; View (Rows 0..47, Cols 0..79)</span></h2>
+      <canvas id="loupe" width="320" height="192"></canvas>
+      <div class="hover-bar">Dashed outline marks rows 14..33, cols 0..47 (48&times;20 px).</div>
+    </div>
+
+    <div class="panel">
+      <h2><span>K = 14 Box Parameters</span></h2>
+      <table>
+        <tbody>
+          <tr><th>Start Row</th><td>K = 14 (rows 14..33)</td></tr>
+          <tr><th>Height</th><td>20 rows</td></tr>
+          <tr><th>Width</th><td>16 &times; ((14 mod 4) + 1) = 48 px (3 words)</td></tr>
+          <tr><th>Start RAM</th><td>16384 + 32 &times; 14 = 16832</td></tr>
+          <tr><th>Last Word</th><td>16384 + 32 &times; 33 + 2 = 17442</td></tr>
+          <tr><th>Total Words</th><td>60 words (960 pixels)</td></tr>
+          <tr><th>Extra Feature</th><td>14 mod 3 = 2 (duplicate label warning)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<script>
+const BOX_HACK = [
+  "0100000111000000","1110110000010000","0000000000010000","1110001100001000",
+  "0000000000010100","1110110000010000","0000000000010001","1110001100001000",
+  "0000000000000011","1110110000010000","0000000000010010","1110001100001000",
+  "0000000000010011","1110101010001000","0110000000000000","1111110000010000",
+  "0000000000010110","1110001100000010","0000000000010100","1110111010001000",
+  "0000000000011000","1110101010000111","0000000000010100","1110101010001000",
+  "0000000000010100","1111110000010000","0000000000010011","1111010011010000",
+  "0000000000001110","1110001100000010","0000000000010100","1111110000010000",
+  "0000000000010011","1110001100001000","0000000000010000","1111110000010000",
+  "0000000000010101","1110001100001000","0000000000010001","1111110000010000",
+  "0000000000010110","1110001100001000","0000000000010110","1111110000010000",
+  "0000000000001110","1110001100000010","0000000000010101","1111110000010000",
+  "0000000000010111","1110001100001000","0000000000010010","1111110000010000",
+  "0000000000011000","1110001100001000","0000000000011000","1111110000010000",
+  "0000000001000101","1110001100000010","0000000000010100","1111110000010000",
+  "0000000000010111","1111110000100000","1110001100001000","0000000000010111",
+  "1111110111001000","0000000000011000","1111110010001000","0000000000110110",
+  "1110101010000111","0000000000100000","1110110000010000","0000000000010101",
+  "1111000010001000","0000000000010110","1111110010001000","0000000000101010",
+  "1110101010000111"
+];
+
+const COMP_REV = {
+  '0101010':'0','0111111':'1','0111010':'-1','0001100':'D','0110000':'A',
+  '0001101':'!D','0110001':'!A','0001111':'-D','0110011':'-A','0011111':'D+1',
+  '0110111':'A+1','0001110':'D-1','0110010':'A-1','0000010':'D+A','0010011':'D-A',
+  '0000111':'A-D','0000000':'D&A','0010101':'D|A','1110000':'M','1110001':'!M',
+  '1110011':'-M','1110111':'M+1','1110010':'M-1','1000010':'D+M','1010011':'D-M',
+  '1000111':'M-D','1000000':'D&M','1010101':'D|M'
+};
+const DEST_REV = ['','M','D','MD','A','AM','AD','AMD'];
+const JUMP_REV = ['','JGT','JEQ','JGE','JLT','JNE','JLE','JMP'];
+
+const rom = BOX_HACK.map(b => parseInt(b, 2));
+const ram = new Int16Array(24577);
+let regA = 0, regD = 0, pc = 0;
+let physicalKey = 0, virtualKey = 0, latchedKey = 0, paused = false;
+
+function toSigned16(v) { return (v << 16) >> 16; }
+
+function alu(x, y, c) {
+  let vx = (c & 32) ? 0 : x;
+  if (c & 16) vx = ~vx;
+  let vy = (c & 8) ? 0 : y;
+  if (c & 4) vy = ~vy;
+  let out = (c & 2) ? (vx + vy) : (vx & vy);
+  if (c & 1) out = ~out;
+  return toSigned16(out);
+}
+
+function stepCPU() {
+  const inst = rom[pc] || 0;
+  if ((inst & 0x8000) === 0) {
+    regA = inst & 0x7FFF;
+    pc = (pc + 1) & 0x7FFF;
+  } else {
+    const aBit = (inst >> 12) & 1;
+    const cBits = (inst >> 6) & 0x3F;
+    const dBits = (inst >> 3) & 0x7;
+    const jBits = inst & 0x7;
+    const inM = (regA >= 0 && regA < ram.length) ? ram[regA] : 0;
+    const out = alu(regD, aBit ? inM : regA, cBits);
+    if ((dBits & 1) && regA >= 0 && regA < 24576) ram[regA] = out;
+    if (dBits & 2) regD = out;
+    if (dBits & 4) regA = out;
+    const jump = ((jBits & 4) && out < 0) || ((jBits & 2) && out === 0) || ((jBits & 1) && out > 0);
+    pc = jump ? (regA & 0x7FFF) : ((pc + 1) & 0x7FFF);
+  }
+}
+
+function disassemble(inst) {
+  if ((inst & 0x8000) === 0) return '@' + (inst & 0x7FFF);
+  const compKey = ((inst >> 6) & 0x7F).toString(2).padStart(7, '0');
+  const d = DEST_REV[(inst >> 3) & 7];
+  const j = JUMP_REV[inst & 7];
+  return (d ? d + '=' : '') + (COMP_REV[compKey] || '?') + (j ? ';' + j : '');
+}
+
+const scr = document.getElementById('hackScreen');
+const ctx = scr.getContext('2d');
+const img = ctx.createImageData(512, 256);
+const loupeCtx = document.getElementById('loupe').getContext('2d');
+
+function render() {
+  const d = img.data;
+  for (let r = 0; r < 256; r++) {
+    const base = 16384 + r * 32;
+    for (let w = 0; w < 32; w++) {
+      const word = ram[base + w];
+      const p0 = (r * 512 + w * 16) * 4;
+      for (let b = 0; b < 16; b++) {
+        const c = ((word >> b) & 1) ? 0 : 255;
+        const i = p0 + b * 4;
+        d[i] = c; d[i+1] = c; d[i+2] = c; d[i+3] = 255;
+      }
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+
+  loupeCtx.imageSmoothingEnabled = false;
+  loupeCtx.drawImage(scr, 0, 0, 80, 48, 0, 0, 320, 192);
+  loupeCtx.strokeStyle = '#dc2626';
+  loupeCtx.setLineDash([4, 3]);
+  loupeCtx.lineWidth = 1.5;
+  loupeCtx.strokeRect(0, 14 * 4, 48 * 4, 20 * 4);
+  loupeCtx.setLineDash([]);
+
+  const kbd = ram[24576];
+  document.getElementById('stPC').textContent = pc;
+  document.getElementById('stInst').textContent = disassemble(rom[pc] || 0);
+  document.getElementById('stA').textContent = regA;
+  document.getElementById('stD').textContent = regD;
+  document.getElementById('stKBD').textContent = kbd;
+  document.getElementById('stTop').textContent = ram[16832];
+  document.getElementById('stBot').textContent = ram[17442];
+  const badge = document.getElementById('kbdBadge');
+  badge.textContent = kbd ? `RAM[KBD] = ${kbd} (pressed)` : 'RAM[KBD] = 0';
+  badge.classList.toggle('active', kbd !== 0);
+}
+
+function setVirtualKey(k) {
+  virtualKey = k;
+  document.getElementById('holdKeyBtn').classList.toggle('on', k !== 0);
+}
+function toggleLatchKey() {
+  latchedKey = latchedKey ? 0 : 65;
+  document.getElementById('toggleKeyBtn').classList.toggle('on', latchedKey !== 0);
+}
+function togglePause() {
+  paused = !paused;
+  const b = document.getElementById('pauseBtn');
+  b.textContent = paused ? 'Resume' : 'Pause';
+  b.classList.toggle('on', paused);
+}
+function singleStep() {
+  if (!paused) togglePause();
+  ram[24576] = physicalKey || virtualKey || latchedKey;
+  stepCPU();
+  render();
+}
+function resetCPU() {
+  ram.fill(0); regA = 0; regD = 0; pc = 0;
+  latchedKey = 0; virtualKey = 0; physicalKey = 0;
+  document.getElementById('toggleKeyBtn').classList.remove('on');
+  document.getElementById('holdKeyBtn').classList.remove('on');
+  render();
+}
+
+window.addEventListener('keydown', e => {
+  if (document.activeElement.tagName === 'INPUT') return;
+  physicalKey = e.key.length === 1 ? e.key.charCodeAt(0) : (e.keyCode || 32);
+});
+window.addEventListener('keyup', () => { physicalKey = 0; });
+window.addEventListener('blur', () => { physicalKey = 0; virtualKey = 0; });
+
+scr.addEventListener('mousemove', e => {
+  const rect = scr.getBoundingClientRect();
+  const col = Math.min(511, Math.max(0, Math.floor((e.clientX - rect.left) * 512 / rect.width)));
+  const row = Math.min(255, Math.max(0, Math.floor((e.clientY - rect.top) * 256 / rect.height)));
+  const addr = 16384 + row * 32 + Math.floor(col / 16);
+  document.getElementById('hoverInfo').textContent =
+    `Row ${row}, Col ${col} -> RAM[${addr}], bit ${col % 16} (value: ${ram[addr]})`;
+});
+
+function setMem(a) { document.getElementById('memAddr').value = a; renderMem(); }
+function renderMem() {
+  const a = Math.max(0, Math.min(24576, parseInt(document.getElementById('memAddr').value || '0', 10)));
+  const bin = a.toString(2).padStart(15, '0');
+  const sel = bin.slice(0, 2);
+  document.getElementById('mHex').textContent = '0x' + a.toString(16).toUpperCase().padStart(4, '0');
+  document.getElementById('mBin').textContent = sel + ' ' + bin.slice(2);
+  document.getElementById('mSel').textContent = sel;
+  let dev = '';
+  if (sel === '00' || sel === '01') dev = `RAM16K[${a}]`;
+  else if (sel === '10') {
+    const off = a - 16384;
+    dev = `Screen[${off}] (Row ${Math.floor(off / 32)}, Word ${off % 32})`;
+  } else dev = a === 24576 ? 'Keyboard (KBD)' : 'Unused';
+  document.getElementById('mDev').textContent = dev;
+  document.getElementById('memSegTag').textContent = sel === '10' ? 'Screen' : (sel === '11' ? 'Keyboard' : 'RAM16K');
+}
+
+function tick() {
+  ram[24576] = physicalKey || virtualKey || latchedKey;
+  if (!paused) {
+    for (let i = 0; i < 2000; i++) stepCPU();
+  }
+  render();
+  requestAnimationFrame(tick);
+}
+
+renderMem();
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>

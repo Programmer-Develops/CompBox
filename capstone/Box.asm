@@ -1,27 +1,13 @@
-// ============================================================================
-// Nand to Tetris - I (ETCCNT301) Capstone Project: Part C - Interactive Box
-// Student  : Shantanu Pandya
-// Roll No. : 2501730014
-// Personal Number K = 14
+// Box.asm — Nand to Tetris I (ETCCNT301) Capstone Project
+// Name: Shantanu Pandya | Roll No: 2501730014 | K = 14
 //
-// Box Specification for K = 14:
-//   - Starting row : K = 14  (0-indexed from top of screen)
-//   - Height       : 20 rows (rows 14 to 33 inclusive)
-//   - Width        : 16 * ((K mod 4) + 1) = 16 * (2 + 1) = 48 pixels (3 words)
-//   - Position     : Left edge (column word 0, 1, 2)
-//   - Start RAM    : SCREEN (16384) + 32 * 14 = 16832
-//   - Behavior     : Black box (-1) while any key is pressed (KBD != 0);
-//                    disappears (0) when the key is released (KBD == 0).
-//
-// Viva Quick-Edit Guide:
-//   - Move down by N rows  : add 32*N to @16832 (e.g. +10 rows -> @17152)
-//   - Move right by W words: add W to @16832    (e.g. +2 words -> @16834)
-//   - Change height        : edit @20
-//   - Change width (words) : edit @3  (each word = 16 pixels)
-// ============================================================================
+// Draws a 48x20 black box starting at row 14 (left edge, RAM[16832])
+// while any key is pressed, and clears it when the key is released.
+//   Start address : SCREEN (16384) + 32 * 14 = 16832
+//   Height        : 20 rows (rows 14..33)
+//   Width         : 16 * ((14 mod 4) + 1) = 48 pixels (3 words)
 
-// --- One-time Configuration Setup ---
-    @16832          // Start address = SCREEN (16384) + 32 * 14 = 16832 (Row 14)
+    @16832          // Row 14 start address: 16384 + 32 * 14
     D=A
     @start_addr
     M=D

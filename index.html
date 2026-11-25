@@ -156,6 +156,27 @@
     border: 1px solid #374151;
     display: block;
   }
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .field-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .field-grid input { width: 100%; }
+  .warn {
+    margin: 10px 0;
+    font-size: 0.82rem;
+    color: #b91c1c;
+    min-height: 1.1em;
+  }
+  td.changed { color: #b45309; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -193,8 +214,8 @@
         <div class="reg"><div class="k">A</div><div class="v" id="stA">0</div></div>
         <div class="reg"><div class="k">D</div><div class="v" id="stD">0</div></div>
         <div class="reg"><div class="k">RAM[24576]</div><div class="v" id="stKBD">0</div></div>
-        <div class="reg"><div class="k">RAM[16832]</div><div class="v" id="stTop">0</div></div>
-        <div class="reg"><div class="k">RAM[17442]</div><div class="v" id="stBot">0</div></div>
+        <div class="reg"><div class="k" id="lblTop">RAM[16832]</div><div class="v" id="stTop">0</div></div>
+        <div class="reg"><div class="k" id="lblBot">RAM[17442]</div><div class="v" id="stBot">0</div></div>
       </div>
     </div>
 
@@ -226,24 +247,55 @@
 
   <div>
     <div class="panel">
-      <h2><span>Top-Left 4&times; View (Rows 0..47, Cols 0..79)</span></h2>
-      <canvas id="loupe" width="320" height="192"></canvas>
-      <div class="hover-bar">Dashed outline marks rows 14..33, cols 0..47 (48&times;20 px).</div>
+      <h2><span>What if K (or the box) changes?</span><span class="tag" id="cfgState">K = 14 (original)</span></h2>
+
+      <div class="field-grid">
+        <label>K <input type="number" id="inK" min="0" max="99" value="14" oninput="cfgFromK()" /></label>
+        <label>Start row <input type="number" id="inRow" min="0" max="255" value="14" oninput="cfgFromFields()" /></label>
+        <label>Start column (words) <input type="number" id="inCol" min="0" max="31" value="0" oninput="cfgFromFields()" /></label>
+        <label>Height (rows) <input type="number" id="inH" min="1" max="256" value="20" oninput="cfgFromFields()" /></label>
+        <label>Width (words) <input type="number" id="inW" min="1" max="32" value="3" oninput="cfgFromFields()" /></label>
+      </div>
+      <div class="hover-bar">Changing K sets row = K and width = (K mod 4) + 1 words. The other fields can be edited on their own.</div>
+
+      <div class="controls">
+        <button onclick="nudge('row', 10)">Move down 10 rows</button>
+        <button onclick="nudge('row', -10)">Move up 10 rows</button>
+        <button onclick="nudge('col', 2)">Move right 2 words</button>
+        <button onclick="nudge('h', 10)">Taller by 10</button>
+        <button onclick="nudge('w', 1)">Wider by 1 word</button>
+        <button onclick="resetK14()">Back to K = 14</button>
+      </div>
+
+      <div class="warn" id="cfgWarn"></div>
+
+      <table>
+        <tbody>
+          <tr><th>Rows covered</th><td id="oRows"></td></tr>
+          <tr><th>Width</th><td id="oWidth"></td></tr>
+          <tr><th>Start address</th><td id="oStart"></td></tr>
+          <tr><th>Last word</th><td id="oLast"></td></tr>
+          <tr><th>Words painted</th><td id="oWords"></td></tr>
+          <tr><th>K mod 3</th><td id="oMod3"></td></tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:14px;"><span>Lines to edit in Box.asm</span></h2>
+      <table>
+        <thead><tr><th>Line</th><th>Original (K = 14)</th><th>Now</th></tr></thead>
+        <tbody>
+          <tr><td>start address</td><td>@16832</td><td id="eStart"></td></tr>
+          <tr><td>height</td><td>@20</td><td id="eH"></td></tr>
+          <tr><td>width</td><td>@3</td><td id="eW"></td></tr>
+        </tbody>
+      </table>
+      <div class="hover-bar">Only these three constants change. The row step of +32 words never changes, because every screen row is 32 words wide. Re-assemble and reload Box.hack after editing.</div>
     </div>
 
     <div class="panel">
-      <h2><span>K = 14 Box Parameters</span></h2>
-      <table>
-        <tbody>
-          <tr><th>Start Row</th><td>K = 14 (rows 14..33)</td></tr>
-          <tr><th>Height</th><td>20 rows</td></tr>
-          <tr><th>Width</th><td>16 &times; ((14 mod 4) + 1) = 48 px (3 words)</td></tr>
-          <tr><th>Start RAM</th><td>16384 + 32 &times; 14 = 16832</td></tr>
-          <tr><th>Last Word</th><td>16384 + 32 &times; 33 + 2 = 17442</td></tr>
-          <tr><th>Total Words</th><td>60 words (960 pixels)</td></tr>
-          <tr><th>Extra Feature</th><td>14 mod 3 = 2 (duplicate label warning)</td></tr>
-        </tbody>
-      </table>
+      <h2><span id="loupeTitle">4&times; View</span></h2>
+      <canvas id="loupe" width="320" height="192"></canvas>
+      <div class="hover-bar">Dashed outline marks where the box will be drawn. Hold a key to see it filled.</div>
     </div>
   </div>
 </main>
@@ -283,7 +335,10 @@ const COMP_REV = {
 const DEST_REV = ['','M','D','MD','A','AM','AD','AMD'];
 const JUMP_REV = ['','JGT','JEQ','JGE','JLT','JNE','JLE','JMP'];
 
-const rom = BOX_HACK.map(b => parseInt(b, 2));
+const ROM_BASE = BOX_HACK.map(b => parseInt(b, 2));
+const rom = ROM_BASE.slice();
+const cfg = { row: 14, col: 0, h: 20, w: 3 };
+const ORIGINAL = { row: 14, col: 0, h: 20, w: 3 };
 const ram = new Int16Array(24577);
 let regA = 0, regD = 0, pc = 0;
 let physicalKey = 0, virtualKey = 0, latchedKey = 0, paused = false;
@@ -349,22 +404,38 @@ function render() {
   }
   ctx.putImageData(img, 0, 0);
 
+  ctx.save();
+  ctx.strokeStyle = 'rgba(220, 38, 38, 0.75)';
+  ctx.setLineDash([4, 3]);
+  ctx.lineWidth = 1;
+  ctx.strokeRect(cfg.col * 16 + 0.5, cfg.row + 0.5, cfg.w * 16 - 1, cfg.h - 1);
+  ctx.restore();
+
+  const sx = Math.min(Math.max(cfg.col * 16 - 16, 0), 512 - 80);
+  const sy = Math.min(Math.max(cfg.row - 8, 0), 256 - 48);
   loupeCtx.imageSmoothingEnabled = false;
-  loupeCtx.drawImage(scr, 0, 0, 80, 48, 0, 0, 320, 192);
+  loupeCtx.clearRect(0, 0, 320, 192);
+  loupeCtx.drawImage(scr, sx, sy, 80, 48, 0, 0, 320, 192);
   loupeCtx.strokeStyle = '#dc2626';
   loupeCtx.setLineDash([4, 3]);
   loupeCtx.lineWidth = 1.5;
-  loupeCtx.strokeRect(0, 14 * 4, 48 * 4, 20 * 4);
+  loupeCtx.strokeRect((cfg.col * 16 - sx) * 4, (cfg.row - sy) * 4, cfg.w * 16 * 4, cfg.h * 4);
   loupeCtx.setLineDash([]);
+  document.getElementById('loupeTitle').textContent =
+    `4\u00d7 view (rows ${sy}..${sy + 47}, cols ${sx}..${sx + 79})`;
 
   const kbd = ram[24576];
+  const startAddr = 16384 + 32 * cfg.row + cfg.col;
+  const lastAddr = 16384 + 32 * (cfg.row + cfg.h - 1) + cfg.col + cfg.w - 1;
   document.getElementById('stPC').textContent = pc;
   document.getElementById('stInst').textContent = disassemble(rom[pc] || 0);
   document.getElementById('stA').textContent = regA;
   document.getElementById('stD').textContent = regD;
   document.getElementById('stKBD').textContent = kbd;
-  document.getElementById('stTop').textContent = ram[16832];
-  document.getElementById('stBot').textContent = ram[17442];
+  document.getElementById('lblTop').textContent = 'RAM[' + startAddr + ']';
+  document.getElementById('lblBot').textContent = 'RAM[' + lastAddr + ']';
+  document.getElementById('stTop').textContent = ram[startAddr];
+  document.getElementById('stBot').textContent = ram[lastAddr];
   const badge = document.getElementById('kbdBadge');
   badge.textContent = kbd ? `RAM[KBD] = ${kbd} (pressed)` : 'RAM[KBD] = 0';
   badge.classList.toggle('active', kbd !== 0);
@@ -396,6 +467,91 @@ function resetCPU() {
   document.getElementById('toggleKeyBtn').classList.remove('on');
   document.getElementById('holdKeyBtn').classList.remove('on');
   render();
+}
+
+// ---- Box position / K experiments ----
+// Box.hack stores the start address, height and width with @value
+// instructions at ROM[0], ROM[4] and ROM[8]; patching those three
+// is the same as editing the three constants in Box.asm and re-assembling.
+function readFields() {
+  return {
+    row: parseInt(document.getElementById('inRow').value, 10),
+    col: parseInt(document.getElementById('inCol').value, 10),
+    h: parseInt(document.getElementById('inH').value, 10),
+    w: parseInt(document.getElementById('inW').value, 10)
+  };
+}
+
+function writeFields(c) {
+  document.getElementById('inRow').value = c.row;
+  document.getElementById('inCol').value = c.col;
+  document.getElementById('inH').value = c.h;
+  document.getElementById('inW').value = c.w;
+}
+
+function applyCfg(c) {
+  const warn = document.getElementById('cfgWarn');
+  const vals = [c.row, c.col, c.h, c.w];
+  if (vals.some(v => Number.isNaN(v))) { warn.textContent = 'Enter a number in every field.'; return; }
+  if (c.row < 0 || c.col < 0 || c.h < 1 || c.w < 1) { warn.textContent = 'Row/column cannot be negative; height and width must be at least 1.'; return; }
+  if (c.row + c.h > 256) { warn.textContent = `Not applied: row ${c.row} + height ${c.h} = ${c.row + c.h} goes past the bottom of the screen (256 rows).`; return; }
+  if (c.col + c.w > 32) { warn.textContent = `Not applied: column ${c.col} + width ${c.w} = ${c.col + c.w} words goes past the right edge (32 words per row).`; return; }
+  warn.textContent = '';
+
+  Object.assign(cfg, c);
+  const start = 16384 + 32 * c.row + c.col;
+  const last = 16384 + 32 * (c.row + c.h - 1) + c.col + c.w - 1;
+
+  for (let i = 0; i < rom.length; i++) rom[i] = ROM_BASE[i];
+  rom[0] = start; rom[4] = c.h; rom[8] = c.w;
+  ram.fill(0); regA = 0; regD = 0; pc = 0;
+
+  const K = parseInt(document.getElementById('inK').value, 10);
+  document.getElementById('oRows').textContent = `${c.row}..${c.row + c.h - 1} (${c.h} rows)`;
+  document.getElementById('oWidth').textContent = `${c.w} words = 16 \u00d7 ${c.w} = ${16 * c.w} px`;
+  document.getElementById('oStart').textContent = `16384 + 32 \u00d7 ${c.row} + ${c.col} = ${start}`;
+  document.getElementById('oLast').textContent = `16384 + 32 \u00d7 ${c.row + c.h - 1} + ${c.col + c.w - 1} = ${last}`;
+  document.getElementById('oWords').textContent = `${c.h} \u00d7 ${c.w} = ${c.h * c.w} words (${c.h * c.w * 16} px)`;
+  document.getElementById('oMod3').textContent = Number.isNaN(K) ? '' :
+    `${K} mod 3 = ${K % 3}` + (K % 3 === 2 ? ' \u2192 duplicate-label warning' : ' \u2192 feature from the assignment sheet');
+
+  const setEdit = (id, val, orig) => {
+    const el = document.getElementById(id);
+    el.textContent = '@' + val;
+    el.classList.toggle('changed', val !== orig);
+  };
+  setEdit('eStart', start, 16832);
+  setEdit('eH', c.h, 20);
+  setEdit('eW', c.w, 3);
+
+  const same = c.row === ORIGINAL.row && c.col === ORIGINAL.col && c.h === ORIGINAL.h && c.w === ORIGINAL.w;
+  document.getElementById('cfgState').textContent = same ? 'K = 14 (original)' : 'modified';
+}
+
+function cfgFromK() {
+  const K = parseInt(document.getElementById('inK').value, 10);
+  if (Number.isNaN(K) || K < 0) return;
+  const c = readFields();
+  c.row = K;
+  c.w = (K % 4) + 1;
+  writeFields(c);
+  applyCfg(c);
+}
+
+function cfgFromFields() { applyCfg(readFields()); }
+
+function nudge(field, delta) {
+  const c = readFields();
+  c[field] += delta;
+  writeFields(c);
+  applyCfg(c);
+}
+
+function resetK14() {
+  document.getElementById('inK').value = 14;
+  const c = { row: 14, col: 0, h: 20, w: 3 };
+  writeFields(c);
+  applyCfg(c);
 }
 
 window.addEventListener('keydown', e => {
@@ -442,6 +598,7 @@ function tick() {
 }
 
 renderMem();
+resetK14();
 requestAnimationFrame(tick);
 </script>
 </body>

@@ -177,6 +177,79 @@
     min-height: 1.1em;
   }
   td.changed { color: #b45309; font-weight: 700; }
+
+  .parts-wrap {
+    max-width: 1120px;
+    margin: 0 auto 40px;
+    padding: 0 20px;
+  }
+  .part-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  .part-tabs button.tab-active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+  }
+  .code-box {
+    background: #0f172a;
+    color: #e2e8f0;
+    border-radius: 5px;
+    padding: 12px 14px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.45;
+    overflow: auto;
+    max-height: 360px;
+    margin: 0;
+    white-space: pre;
+  }
+  .asm-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 800px) { .asm-grid { grid-template-columns: 1fr; } }
+  textarea.asm-in {
+    width: 100%;
+    min-height: 240px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    resize: vertical;
+  }
+  .asm-warn {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    color: #92400e;
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    margin-bottom: 8px;
+    white-space: pre-wrap;
+    display: none;
+  }
+  .asm-err {
+    background: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #991b1b;
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    margin-bottom: 8px;
+    white-space: pre-wrap;
+    display: none;
+  }
+  .pass-txt { color: #15803d; font-weight: 700; }
+
 </style>
 </head>
 <body>
@@ -299,6 +372,106 @@
     </div>
   </div>
 </main>
+
+<section class="parts-wrap">
+  <!-- PART A -->
+  <div class="panel">
+    <h2>
+      <span>Part A — Build the Computer (HDL)</span>
+      <span class="tag">CPU.hdl &bull; Memory.hdl &bull; Computer.hdl</span>
+    </h2>
+    <table style="margin-bottom:12px;">
+      <thead>
+        <tr><th>Official Test Script</th><th>Chip</th><th>Verified Behaviour</th><th>Result</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>CPU.tst</td><td>CPU.hdl</td><td>A/C decode, ALU control, all 7 jumps, reset</td><td class="pass-txt">PASS</td></tr>
+        <tr><td>Memory.tst</td><td>Memory.hdl</td><td>RAM16K, Screen, Keyboard ('K'/'Y'), segment isolation</td><td class="pass-txt">PASS</td></tr>
+        <tr><td>ComputerAdd.tst</td><td>Computer.hdl</td><td>Runs Add.hack (2 + 3 = 5 in RAM[0]) + reset</td><td class="pass-txt">PASS</td></tr>
+        <tr><td>ComputerMax.tst</td><td>Computer.hdl</td><td>Runs Max.hack conditional branching</td><td class="pass-txt">PASS</td></tr>
+        <tr><td>ComputerRect.tst</td><td>Computer.hdl</td><td>Runs Rect.hack (16&times;4 black rectangle on Screen)</td><td class="pass-txt">PASS</td></tr>
+      </tbody>
+    </table>
+    <div class="part-tabs">
+      <button class="tab-active" onclick="showPartA('CPU.hdl', this)">CPU.hdl</button>
+      <button onclick="showPartA('Memory.hdl', this)">Memory.hdl</button>
+      <button onclick="showPartA('Computer.hdl', this)">Computer.hdl</button>
+      <button style="margin-left:auto;" onclick="copyCode('partACode', this)">Copy</button>
+    </div>
+    <pre class="code-box" id="partACode"></pre>
+    <div class="hover-bar">Built-in ARegister, DRegister, ALU, PC, RAM16K, ROM32K, Screen, Keyboard and primitive gates are used per Project 5 test scripts.</div>
+  </div>
+
+  <!-- PART B -->
+  <div class="panel">
+    <h2>
+      <span>Part B — Python Hack Assembler (<code>assembler.py</code>)</span>
+      <span class="tag">K = 14 &rArr; 14 mod 3 = 2 (Duplicate Label Warning)</span>
+    </h2>
+    <table style="margin-bottom:12px;">
+      <thead>
+        <tr><th>Official Program</th><th>Instructions</th><th>Comparison vs. Official Assembler</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Add.asm</td><td>6</td><td class="pass-txt">Exact bit-for-bit match</td></tr>
+        <tr><td>Max.asm</td><td>16</td><td class="pass-txt">Exact bit-for-bit match</td></tr>
+        <tr><td>Rect.asm</td><td>25</td><td class="pass-txt">Exact bit-for-bit match</td></tr>
+        <tr><td>Pong.asm</td><td>27,483</td><td class="pass-txt">Exact bit-for-bit match</td></tr>
+      </tbody>
+    </table>
+    <div class="part-tabs">
+      <button class="tab-active" onclick="showPartB('code', this)">assembler.py</button>
+      <button onclick="showPartB('try', this)">Try Assembler (K mod 3 = 2 Demo)</button>
+      <button id="copyPartBBtn" style="margin-left:auto;" onclick="copyCode('partBCode', this)">Copy</button>
+    </div>
+    <pre class="code-box" id="partBCode"></pre>
+    <div id="partBTry" style="display:none;">
+      <div class="controls" style="margin:0 0 8px;">
+        <button class="primary" onclick="runBrowserAssembler()">Assemble</button>
+        <button onclick="loadAsmSample('test_dup_labels.asm')">Load test_dup_labels.asm</button>
+        <button onclick="loadAsmSample('Box.asm')">Load Box.asm</button>
+      </div>
+      <div class="asm-warn" id="asmWarn"></div>
+      <div class="asm-err" id="asmErr"></div>
+      <div class="asm-grid">
+        <div>
+          <div class="hover-bar" style="margin:0 0 4px;">Hack Assembly (.asm)</div>
+          <textarea class="asm-in" id="asmInput" spellcheck="false"></textarea>
+        </div>
+        <div>
+          <div class="hover-bar" style="margin:0 0 4px;" id="asmOutLabel">Generated Machine Code (.hack)</div>
+          <pre class="code-box" id="asmOutput" style="min-height:240px;max-height:280px;"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART C -->
+  <div class="panel">
+    <h2>
+      <span>Part C — Interactive Box Program (<code>Box.asm</code> &rarr; <code>Box.hack</code>)</span>
+      <span class="tag">Row 14 &bull; 20 rows &bull; 48 px (3 words) &bull; 77 instructions</span>
+    </h2>
+    <table style="margin-bottom:12px;">
+      <thead>
+        <tr><th>Phase</th><th>RAM[24576] (KBD)</th><th>Row 13 Guard (16800)</th><th>Row 14 Box (16832..16834)</th><th>Col 3 Guard (16835)</th><th>Row 33 Box (17440..17442)</th><th>Row 34 Guard (17472)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Idle</td><td>0</td><td>0</td><td>0, 0, 0</td><td>0</td><td>0, 0, 0</td><td>0</td></tr>
+        <tr><td>Key 'A' held</td><td>65</td><td>0</td><td>-1, -1, -1</td><td>0</td><td>-1, -1, -1</td><td>0</td></tr>
+        <tr><td>Released</td><td>0</td><td>0</td><td>0, 0, 0</td><td>0</td><td>0, 0, 0</td><td>0</td></tr>
+        <tr><td>Space held</td><td>32</td><td>0</td><td>-1, -1, -1</td><td>0</td><td>-1, -1, -1</td><td>0</td></tr>
+      </tbody>
+    </table>
+    <div class="part-tabs">
+      <button class="tab-active" onclick="showPartC('Box.asm', this)">Box.asm</button>
+      <button onclick="showPartC('Box.hack', this)">Box.hack (77 instructions)</button>
+      <button style="margin-left:auto;" onclick="copyCode('partCCode', this)">Copy</button>
+    </div>
+    <pre class="code-box" id="partCCode"></pre>
+  </div>
+</section>
+
 
 <script>
 const BOX_HACK = [
@@ -555,7 +728,7 @@ function resetK14() {
 }
 
 window.addEventListener('keydown', e => {
-  if (document.activeElement.tagName === 'INPUT') return;
+  if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
   physicalKey = e.key.length === 1 ? e.key.charCodeAt(0) : (e.keyCode || 32);
 });
 window.addEventListener('keyup', () => { physicalKey = 0; });
@@ -600,6 +773,149 @@ function tick() {
 renderMem();
 resetK14();
 requestAnimationFrame(tick);
+
+// ---- Capstone Source Viewer & Part B Two-Pass Assembler Demo ----
+const CAPSTONE_SOURCES = {"CPU.hdl": "// ============================================================================\n// Nand to Tetris - I (ETCCNT301) Capstone Project: Make the Computer Draw a Box\n// Student  : Shantanu Pandya\n// Roll No. : 2501730014  (Personal Number K = 14)\n// File     : capstone/CPU.hdl\n// ============================================================================\n\n/**\n * The Hack Central Processing Unit (CPU).\n *\n * Instruction format (16 bits):\n *   A-instruction: 0 vvvvvvvvvvvvvvv  (loads 15-bit constant into A)\n *   C-instruction: 1 1 1 a c1 c2 c3 c4 c5 c6 d1 d2 d3 j1 j2 j3\n *     - bit 15     : opcode (0 = A-inst, 1 = C-inst)\n *     - bit 12     : a-bit  (0 = use A register, 1 = use inM)\n *     - bits 11..6 : ALU control bits (zx, nx, zy, ny, f, no)\n *     - bits 5..3  : destination bits (d1=A, d2=D, d3=M)\n *     - bits 2..0  : jump condition bits (j1=<0, j2==0, j3=>0)\n *\n * Note: Uses built-in ARegister, DRegister, ALU, and PC (ARegister and\n * DRegister are inspected directly by the official CPU.tst and Computer*.tst).\n */\n\nCHIP CPU {\n\n    IN  inM[16],         // M value input  (M = contents of RAM[A])\n        instruction[16], // Instruction for execution\n        reset;           // Signals whether to restart the current program\n                         // (reset==1) or continue executing (reset==0).\n\n    OUT outM[16],        // M value output\n        writeM,          // Write to M?\n        addressM[15],    // Address in data memory (of M)\n        pc[15];          // Address of next instruction\n\n    PARTS:\n    // --- 1. Instruction Type Decoding ---\n    // instruction[15] == 0 -> A-instruction; instruction[15] == 1 -> C-instruction\n    Not(in=instruction[15], out=isAInst);\n\n    // --- 2. A-Register Datapath & Control ---\n    // On A-instruction: feed raw instruction into ARegister.\n    // On C-instruction: feed ALU output into ARegister (when d1 == 1).\n    Mux16(a=instruction, b=aluOut, sel=instruction[15], out=aRegIn);\n\n    And(a=instruction[15], b=instruction[5], out=cWriteA);\n    Or(a=isAInst, b=cWriteA, out=loadA);\n    ARegister(in=aRegIn, load=loadA, out=aRegOut, out[0..14]=addressM);\n\n    // --- 3. D-Register Control ---\n    // Load D only on a C-instruction whose d2 bit (instruction[4]) is 1.\n    And(a=instruction[15], b=instruction[4], out=loadD);\n    DRegister(in=aluOut, load=loadD, out=dRegOut);\n\n    // --- 4. Memory Write Control ---\n    // Assert writeM only on a C-instruction whose d3 bit (instruction[3]) is 1.\n    And(a=instruction[15], b=instruction[3], out=writeM);\n\n    // --- 5. ALU Input Selection & Execution ---\n    // Select A or M (inM) for ALU's y-input based on the 'a' bit (instruction[12]).\n    Mux16(a=aRegOut, b=inM, sel=instruction[12], out=aluY);\n\n    ALU(x=dRegOut,\n        y=aluY,\n        zx=instruction[11],\n        nx=instruction[10],\n        zy=instruction[9],\n        ny=instruction[8],\n        f=instruction[7],\n        no=instruction[6],\n        out=aluOut,\n        out=outM,\n        zr=aluZero,\n        ng=aluNeg);\n\n    // --- 6. Jump Logic & Program Counter ---\n    // Strictly positive flag: aluPos = NOT(aluZero OR aluNeg)\n    Or(a=aluZero, b=aluNeg, out=aluLteZero);\n    Not(in=aluLteZero, out=aluPos);\n\n    // Evaluate each jump condition bit against ALU status flags\n    And(a=instruction[2], b=aluNeg,  out=jumpLT); // j1: out < 0\n    And(a=instruction[1], b=aluZero, out=jumpEQ); // j2: out == 0\n    And(a=instruction[0], b=aluPos,  out=jumpGT); // j3: out > 0\n\n    Or(a=jumpLT, b=jumpEQ, out=jumpLE);\n    Or(a=jumpLE, b=jumpGT, out=jumpRequested);\n\n    // Jumps are only permitted during C-instructions\n    And(a=instruction[15], b=jumpRequested, out=pcLoad);\n\n    // Priority inside PC: reset > load (jump to A) > inc (PC + 1)\n    PC(in=aRegOut, load=pcLoad, inc=true, reset=reset, out[0..14]=pc);\n}\n", "Memory.hdl": "// ============================================================================\n// Nand to Tetris - I (ETCCNT301) Capstone Project: Make the Computer Draw a Box\n// Student  : Shantanu Pandya\n// Roll No. : 2501730014  (Personal Number K = 14)\n// File     : capstone/Memory.hdl\n// ============================================================================\n\n/**\n * The complete address space of the Hack computer's memory,\n * including RAM and memory-mapped I/O.\n *\n * Address Map (15-bit address[0..14]):\n *   0x0000 - 0x3FFF (0     - 16383) : RAM16K   (address[14]=0  -> sel = 00 or 01)\n *   0x4000 - 0x5FFF (16384 - 24575) : Screen   (address[13..14]=10)\n *   0x6000          (24576)         : Keyboard (address[13..14]=11)\n *\n * Note: Uses built-in RAM16K, Screen, Keyboard (required by official\n * Memory.tst and Computer*.tst scripts for direct memory inspection and I/O).\n */\n\nCHIP Memory {\n    IN  in[16], load, address[15];\n    OUT out[16];\n\n    PARTS:\n    // 1. Route the write-enable (load) signal to the exact target segment\n    //    using the top two address bits address[13..14].\n    //    00 -> lower 8K RAM, 01 -> upper 8K RAM, 10 -> Screen, 11 -> Keyboard (read-only)\n    DMux4Way(in=load, sel=address[13..14],\n             a=loadRamLow, b=loadRamHigh, c=loadScreen, d=loadKbdUnused);\n\n    // Combine lower and upper 8K RAM load signals into a single RAM16K load bit\n    Or(a=loadRamLow, b=loadRamHigh, out=loadRam);\n\n    // 2. Instantiate the three memory-mapped hardware devices\n    RAM16K(in=in, load=loadRam, address=address[0..13], out=ramOut);\n    Screen(in=in, load=loadScreen, address=address[0..12], out=screenOut);\n    Keyboard(out=kbdOut);\n\n    // 3. Select the active device's output based on address[13..14]\n    Mux4Way16(a=ramOut, b=ramOut, c=screenOut, d=kbdOut,\n              sel=address[13..14], out=out);\n}\n", "Computer.hdl": "// ============================================================================\n// Nand to Tetris - I (ETCCNT301) Capstone Project: Make the Computer Draw a Box\n// Student  : Shantanu Pandya\n// Roll No. : 2501730014  (Personal Number K = 14)\n// File     : capstone/Computer.hdl\n// ============================================================================\n\n/**\n * The Hack Computer: Harvard architecture uniting ROM32K, CPU, and Memory.\n *\n * Fetch-Execute Cycle:\n *   1. ROM32K fetches the 16-bit instruction at address pc.\n *   2. CPU decodes & executes the instruction using inM (from Memory)\n *      and outputs outM, writeM, addressM, and the next pc.\n *   3. Memory reads/writes RAM, Screen, or Keyboard at addressM.\n *\n * Setting reset=1 restarts execution from ROM[0].\n */\n\nCHIP Computer {\n\n    IN reset;\n\n    PARTS:\n    // 1. Instruction Memory (32K x 16-bit ROM)\n    ROM32K(address=pc, out=instruction);\n\n    // 2. Central Processing Unit\n    CPU(inM=memOut,\n        instruction=instruction,\n        reset=reset,\n        outM=outM,\n        writeM=writeM,\n        addressM=addressM,\n        pc=pc);\n\n    // 3. Data Memory + Memory-Mapped I/O (RAM16K + Screen + Keyboard)\n    Memory(in=outM, load=writeM, address=addressM, out=memOut);\n}\n", "assembler.py": "#!/usr/bin/env python3\n\"\"\"\nNand to Tetris - I (ETCCNT301) Capstone Project: Part B - Hack Assembler\nStudent  : Shantanu Pandya\nRoll No. : 2501730014\nPersonal Number K = 14  (K mod 3 = 2)\n\nExtra Feature (K mod 3 == 2):\n    Prints a clear warning whenever the same label (LABEL) is declared\n    more than once, reporting both the duplicate line number and the\n    original line number / ROM address.\n\nUsage:\n    python assembler.py <input.asm> [output.hack]\n\n    If output.hack is omitted, writes <input_stem>.hack next to <input.asm>.\n\"\"\"\n\nfrom pathlib import Path\nimport sys\n\n\n# ---------------------------------------------------------------------------\n# Hack Machine Language Lookup Tables (Chapter 6 Specification)\n# ---------------------------------------------------------------------------\n\nPREDEFINED_SYMBOLS: dict[str, int] = {\n    \"SP\": 0,\n    \"LCL\": 1,\n    \"ARG\": 2,\n    \"THIS\": 3,\n    \"THAT\": 4,\n    **{f\"R{i}\": i for i in range(16)},\n    \"SCREEN\": 16384,\n    \"KBD\": 24576,\n}\n\n# comp -> 7-bit string: a c1 c2 c3 c4 c5 c6\nCOMP_TABLE: dict[str, str] = {\n    # a = 0 (ALU operates on D and A)\n    \"0\":   \"0101010\",\n    \"1\":   \"0111111\",\n    \"-1\":  \"0111010\",\n    \"D\":   \"0001100\",\n    \"A\":   \"0110000\",\n    \"!D\":  \"0001101\",\n    \"!A\":  \"0110001\",\n    \"-D\":  \"0001111\",\n    \"-A\":  \"0110011\",\n    \"D+1\": \"0011111\",\n    \"A+1\": \"0110111\",\n    \"D-1\": \"0001110\",\n    \"A-1\": \"0110010\",\n    \"D+A\": \"0000010\",\n    \"A+D\": \"0000010\",  # commutative alias\n    \"D-A\": \"0010011\",\n    \"A-D\": \"0000111\",\n    \"D&A\": \"0000000\",\n    \"A&D\": \"0000000\",  # commutative alias\n    \"D|A\": \"0010101\",\n    \"A|D\": \"0010101\",  # commutative alias\n    # a = 1 (ALU operates on D and M)\n    \"M\":   \"1110000\",\n    \"!M\":  \"1110001\",\n    \"-M\":  \"1110011\",\n    \"M+1\": \"1110111\",\n    \"M-1\": \"1110010\",\n    \"D+M\": \"1000010\",\n    \"M+D\": \"1000010\",  # commutative alias\n    \"D-M\": \"1010011\",\n    \"M-D\": \"1000111\",\n    \"D&M\": \"1000000\",\n    \"M&D\": \"1000000\",  # commutative alias\n    \"D|M\": \"1010101\",\n    \"M|D\": \"1010101\",  # commutative alias\n}\n\n# dest -> 3-bit string: d1(A) d2(D) d3(M)\nDEST_TABLE: dict[str, str] = {\n    \"\":    \"000\",\n    \"M\":   \"001\",\n    \"D\":   \"010\",\n    \"MD\":  \"011\",\n    \"DM\":  \"011\",  # alternate ordering\n    \"A\":   \"100\",\n    \"AM\":  \"101\",\n    \"MA\":  \"101\",  # alternate ordering\n    \"AD\":  \"110\",\n    \"DA\":  \"110\",  # alternate ordering\n    \"AMD\": \"111\",\n}\n\n# jump -> 3-bit string: j1(<0) j2(==0) j3(>0)\nJUMP_TABLE: dict[str, str] = {\n    \"\":    \"000\",\n    \"JGT\": \"001\",\n    \"JEQ\": \"010\",\n    \"JGE\": \"011\",\n    \"JLT\": \"100\",\n    \"JNE\": \"101\",\n    \"JLE\": \"110\",\n    \"JMP\": \"111\",\n}\n\n\n# ---------------------------------------------------------------------------\n# Helper Functions\n# ---------------------------------------------------------------------------\n\ndef clean_line(raw_line: str) -> str:\n    \"\"\"Remove inline '//' comments and all whitespace from a source line.\"\"\"\n    no_comment = raw_line.split(\"//\", 1)[0]\n    return \"\".join(no_comment.split())\n\n\ndef encode_a_instruction(\n    operand: str,\n    symbol_table: dict[str, int],\n    next_ram_addr: int,\n    line_no: int,\n) -> tuple[str, int]:\n    \"\"\"\n    Translate an A-instruction (@value or @symbol) into a 16-bit binary string.\n    Returns (binary_16bit, updated_next_ram_addr).\n    \"\"\"\n    if not operand:\n        raise ValueError(f\"Line {line_no}: empty A-instruction '@'\")\n\n    if operand.isdigit():\n        value = int(operand)\n        if not (0 <= value <= 32767):\n            raise ValueError(\n                f\"Line {line_no}: A-instruction constant '{value}' out of 15-bit range (0..32767)\"\n            )\n    else:\n        if operand not in symbol_table:\n            symbol_table[operand] = next_ram_addr\n            next_ram_addr += 1\n        value = symbol_table[operand]\n\n    return f\"0{value:015b}\", next_ram_addr\n\n\ndef encode_c_instruction(instruction: str, line_no: int) -> str:\n    \"\"\"\n    Translate a C-instruction ([dest=]comp[;jump]) into a 16-bit binary string:\n        111 + comp(7) + dest(3) + jump(3)\n    \"\"\"\n    dest = \"\"\n    jump = \"\"\n    rest = instruction\n\n    if \"=\" in rest:\n        dest, rest = rest.split(\"=\", 1)\n    if \";\" in rest:\n        comp, jump = rest.split(\";\", 1)\n    else:\n        comp = rest\n\n    if dest not in DEST_TABLE:\n        raise ValueError(f\"Line {line_no}: invalid dest field '{dest}' in '{instruction}'\")\n    if comp not in COMP_TABLE:\n        raise ValueError(f\"Line {line_no}: invalid comp field '{comp}' in '{instruction}'\")\n    if jump not in JUMP_TABLE:\n        raise ValueError(f\"Line {line_no}: invalid jump field '{jump}' in '{instruction}'\")\n\n    return f\"111{COMP_TABLE[comp]}{DEST_TABLE[dest]}{JUMP_TABLE[jump]}\"\n\n\n# ---------------------------------------------------------------------------\n# Two-Pass Assembler Core\n# ---------------------------------------------------------------------------\n\ndef assemble(source_lines: list[str]) -> tuple[list[str], list[str], dict[str, int]]:\n    \"\"\"\n    Run the two-pass Hack assembler over source_lines.\n\n    Returns:\n        machine_code : list of 16-bit binary strings\n        warnings     : list of duplicate-label warning messages (K mod 3 == 2)\n        symbol_table : final symbol table (predefined + labels + variables)\n    \"\"\"\n    symbol_table: dict[str, int] = dict(PREDEFINED_SYMBOLS)\n    defined_labels: dict[str, tuple[int, int]] = {}  # label -> (first_line_no, rom_addr)\n    warnings: list[str] = []\n    instructions: list[tuple[int, str]] = []  # (original_line_no, cleaned_instruction)\n\n    # ---------------- PASS 1: Strip comments & record (LABEL) positions ----------------\n    rom_address = 0\n    for line_no, raw_line in enumerate(source_lines, start=1):\n        code = clean_line(raw_line)\n        if not code:\n            continue\n\n        if code.startswith(\"(\") and code.endswith(\")\"):\n            label = code[1:-1]\n            if not label:\n                raise ValueError(f\"Line {line_no}: empty label declaration '()'\")\n\n            # Extra Feature for K = 14 (14 mod 3 = 2):\n            # Warn whenever the same label is written more than once.\n            if label in defined_labels:\n                first_line, first_rom = defined_labels[label]\n                warnings.append(\n                    f\"WARNING (Line {line_no}): Duplicate label '({label})' \u2014 \"\n                    f\"already declared at Line {first_line} (ROM address {first_rom}). \"\n                    f\"Keeping first definition.\"\n                )\n            else:\n                defined_labels[label] = (line_no, rom_address)\n                symbol_table[label] = rom_address\n        else:\n            instructions.append((line_no, code))\n            rom_address += 1\n\n    # ---------------- PASS 2: Translate instructions & allocate variables --------------\n    machine_code: list[str] = []\n    next_ram_addr = 16  # User variables start at RAM[16]\n\n    for line_no, code in instructions:\n        if code.startswith(\"@\"):\n            binary, next_ram_addr = encode_a_instruction(\n                code[1:], symbol_table, next_ram_addr, line_no\n            )\n        else:\n            binary = encode_c_instruction(code, line_no)\n        machine_code.append(binary)\n\n    return machine_code, warnings, symbol_table\n\n\ndef assemble_file(input_path: Path, output_path: Path | None = None) -> tuple[Path, int, list[str]]:\n    \"\"\"Assemble an .asm file on disk and write the resulting .hack file.\"\"\"\n    if not input_path.is_file():\n        raise FileNotFoundError(f\"Input file not found: {input_path}\")\n\n    if output_path is None:\n        output_path = input_path.with_suffix(\".hack\")\n\n    source_lines = input_path.read_text(encoding=\"utf-8\").splitlines()\n    machine_code, warnings, _ = assemble(source_lines)\n\n    for warning in warnings:\n        print(warning, file=sys.stderr)\n\n    output_text = \"\\n\".join(machine_code) + (\"\\n\" if machine_code else \"\")\n    output_path.write_text(output_text, encoding=\"utf-8\")\n    return output_path, len(machine_code), warnings\n\n\ndef main(argv: list[str]) -> int:\n    if len(argv) < 2 or len(argv) > 3:\n        print(\"Usage: python assembler.py <input.asm> [output.hack]\", file=sys.stderr)\n        return 1\n\n    input_path = Path(argv[1])\n    output_path = Path(argv[2]) if len(argv) == 3 else None\n\n    try:\n        written_path, count, warnings = assemble_file(input_path, output_path)\n    except (FileNotFoundError, ValueError) as exc:\n        print(f\"Error: {exc}\", file=sys.stderr)\n        return 1\n\n    print(\n        f\"Assembled {input_path.name} -> {written_path.name} \"\n        f\"({count} instructions, {len(warnings)} warning(s))\"\n    )\n    return 0\n\n\nif __name__ == \"__main__\":\n    raise SystemExit(main(sys.argv))\n", "Box.asm": "// Box.asm \u2014 Nand to Tetris I (ETCCNT301) Capstone Project\n// Name: Shantanu Pandya | Roll No: 2501730014 | K = 14\n//\n// Draws a 48x20 black box starting at row 14 (left edge, RAM[16832])\n// while any key is pressed, and clears it when the key is released.\n//   Start address : SCREEN (16384) + 32 * 14 = 16832\n//   Height        : 20 rows (rows 14..33)\n//   Width         : 16 * ((14 mod 4) + 1) = 48 pixels (3 words)\n\n    @16832          // Row 14 start address: 16384 + 32 * 14\n    D=A\n    @start_addr\n    M=D\n\n    @20             // Box height = 20 rows (rows 14..33)\n    D=A\n    @height\n    M=D\n\n    @3              // Box width = (14 mod 4) + 1 = 3 words = 48 pixels\n    D=A\n    @width\n    M=D\n\n    @prev_color     // Track last drawn color (screen starts white = 0)\n    M=0\n\n// --- Main Keyboard Polling Loop ---\n(MAIN_LOOP)\n    @KBD            // RAM[24576]: 0 if no key pressed, keycode != 0 if pressed\n    D=M\n    @SET_WHITE\n    D;JEQ\n\n    // Any key is pressed -> select black (-1 = 0xFFFF = 16 black pixels)\n    @color\n    M=-1\n    @CHECK_CHANGE\n    0;JMP\n\n(SET_WHITE)\n    // No key is pressed -> select white (0 = 0x0000 = 16 white pixels)\n    @color\n    M=0\n\n(CHECK_CHANGE)\n    // Redraw only when key state changes (eliminates unnecessary redraws/flicker)\n    @color\n    D=M\n    @prev_color\n    D=D-M\n    @MAIN_LOOP\n    D;JEQ\n\n    // Save new color state before drawing\n    @color\n    D=M\n    @prev_color\n    M=D\n\n// --- Draw / Erase the 48x20 Box (20 rows x 3 words/row = 60 screen words) ---\n(DRAW_BOX)\n    @start_addr\n    D=M\n    @row_base       // Current row's starting screen address\n    M=D\n\n    @height\n    D=M\n    @rows_left      // Remaining rows to paint\n    M=D\n\n(ROW_LOOP)\n    @rows_left\n    D=M\n    @MAIN_LOOP      // Finished all 20 rows -> return to polling keyboard\n    D;JEQ\n\n    @row_base\n    D=M\n    @addr           // Current word address inside this row\n    M=D\n\n    @width\n    D=M\n    @cols_left      // Remaining 16-pixel words in this row\n    M=D\n\n(COL_LOOP)\n    @cols_left\n    D=M\n    @NEXT_ROW       // Finished all 3 words in this row -> move to next row\n    D;JEQ\n\n    // Paint 16 pixels at RAM[addr] with color (-1 = black, 0 = white)\n    @color\n    D=M\n    @addr\n    A=M\n    M=D\n\n    // Advance word pointer right by 1 word (16 pixels)\n    @addr\n    M=M+1\n\n    // Decrement remaining words in this row\n    @cols_left\n    M=M-1\n\n    @COL_LOOP\n    0;JMP\n\n(NEXT_ROW)\n    // Move down exactly 1 screen row (+32 words = +512 pixels)\n    @32\n    D=A\n    @row_base\n    M=D+M\n\n    // Decrement remaining rows\n    @rows_left\n    M=M-1\n\n    @ROW_LOOP\n    0;JMP\n", "Box.hack": "0100000111000000\n1110110000010000\n0000000000010000\n1110001100001000\n0000000000010100\n1110110000010000\n0000000000010001\n1110001100001000\n0000000000000011\n1110110000010000\n0000000000010010\n1110001100001000\n0000000000010011\n1110101010001000\n0110000000000000\n1111110000010000\n0000000000010110\n1110001100000010\n0000000000010100\n1110111010001000\n0000000000011000\n1110101010000111\n0000000000010100\n1110101010001000\n0000000000010100\n1111110000010000\n0000000000010011\n1111010011010000\n0000000000001110\n1110001100000010\n0000000000010100\n1111110000010000\n0000000000010011\n1110001100001000\n0000000000010000\n1111110000010000\n0000000000010101\n1110001100001000\n0000000000010001\n1111110000010000\n0000000000010110\n1110001100001000\n0000000000010110\n1111110000010000\n0000000000001110\n1110001100000010\n0000000000010101\n1111110000010000\n0000000000010111\n1110001100001000\n0000000000010010\n1111110000010000\n0000000000011000\n1110001100001000\n0000000000011000\n1111110000010000\n0000000001000101\n1110001100000010\n0000000000010100\n1111110000010000\n0000000000010111\n1111110000100000\n1110001100001000\n0000000000010111\n1111110111001000\n0000000000011000\n1111110010001000\n0000000000110110\n1110101010000111\n0000000000100000\n1110110000010000\n0000000000010101\n1111000010001000\n0000000000010110\n1111110010001000\n0000000000101010\n1110101010000111\n", "test_dup_labels.asm": "// Test file for Part B Extra Feature (K = 14 -> K mod 3 = 2)\n// Prints a warning whenever the same label is written twice.\n\n(START)\n    @10\n    D=A\n    @counter\n    M=D\n\n(LOOP)\n    @counter\n    MD=M-1\n    @END\n    D;JEQ\n    @LOOP\n    0;JMP\n\n// Intentional duplicate label declarations to trigger warnings:\n(LOOP)\n    @0\n    D=A\n\n(END)\n    @END\n    0;JMP\n\n(END)\n    @START\n    0;JMP\n"};
+
+function setActiveTab(btn) {
+  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('tab-active'));
+  btn.classList.add('tab-active');
+}
+
+function showPartA(file, btn) {
+  if (btn) setActiveTab(btn);
+  document.getElementById('partACode').textContent = CAPSTONE_SOURCES[file];
+}
+
+function showPartB(mode, btn) {
+  if (btn) setActiveTab(btn);
+  const isCode = mode === 'code';
+  document.getElementById('partBCode').style.display = isCode ? 'block' : 'none';
+  document.getElementById('copyPartBBtn').style.display = isCode ? 'inline-block' : 'none';
+  document.getElementById('partBTry').style.display = isCode ? 'none' : 'block';
+  if (!isCode && !document.getElementById('asmInput').value) {
+    loadAsmSample('test_dup_labels.asm');
+  }
+}
+
+function showPartC(file, btn) {
+  if (btn) setActiveTab(btn);
+  document.getElementById('partCCode').textContent = CAPSTONE_SOURCES[file];
+}
+
+function copyCode(preId, btn) {
+  const text = document.getElementById(preId).textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      const old = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(() => btn.textContent = old, 1200);
+    });
+  }
+}
+
+const ASM_COMP = {
+  '0':'0101010','1':'0111111','-1':'0111010','D':'0001100','A':'0110000',
+  '!D':'0001101','!A':'0110001','-D':'0001111','-A':'0110011','D+1':'0011111',
+  'A+1':'0110111','D-1':'0001110','A-1':'0110010','D+A':'0000010','A+D':'0000010',
+  'D-A':'0010011','A-D':'0000111','D&A':'0000000','A&D':'0000000','D|A':'0010101','A|D':'0010101',
+  'M':'1110000','!M':'1110001','-M':'1110011','M+1':'1110111','M-1':'1110010',
+  'D+M':'1000010','M+D':'1000010','D-M':'1010011','M-D':'1000111','D&M':'1000000',
+  'M&D':'1000000','D|M':'1010101','M|D':'1010101'
+};
+const ASM_DEST = {
+  '':'000','M':'001','D':'010','MD':'011','DM':'011','A':'100','AM':'101','MA':'101','AD':'110','DA':'110','AMD':'111'
+};
+const ASM_JUMP = {
+  '':'000','JGT':'001','JEQ':'010','JGE':'011','JLT':'100','JNE':'101','JLE':'110','JMP':'111'
+};
+
+function loadAsmSample(name) {
+  document.getElementById('asmInput').value = CAPSTONE_SOURCES[name];
+  runBrowserAssembler();
+}
+
+function runBrowserAssembler() {
+  const lines = document.getElementById('asmInput').value.split(/\r?\n/);
+  const sym = { SP:0, LCL:1, ARG:2, THIS:3, THAT:4, SCREEN:16384, KBD:24576 };
+  for (let i = 0; i < 16; i++) sym['R' + i] = i;
+
+  const definedLabels = {};
+  const warnings = [];
+  const insts = [];
+  let romAddr = 0;
+
+  const warnBox = document.getElementById('asmWarn');
+  const errBox = document.getElementById('asmErr');
+  warnBox.style.display = 'none';
+  errBox.style.display = 'none';
+
+  try {
+    lines.forEach((raw, idx) => {
+      const lineNo = idx + 1;
+      const code = raw.split('//')[0].replace(/\s+/g, '');
+      if (!code) return;
+      if (code.startsWith('(') && code.endsWith(')')) {
+        const lbl = code.slice(1, -1);
+        if (!lbl) throw new Error(`Line ${lineNo}: empty label '()'`);
+        if (lbl in definedLabels) {
+          const [firstLine, firstRom] = definedLabels[lbl];
+          warnings.push(`WARNING (Line ${lineNo}): Duplicate label '(${lbl})' — already declared at Line ${firstLine} (ROM address ${firstRom}). Keeping first definition.`);
+        } else {
+          definedLabels[lbl] = [lineNo, romAddr];
+          sym[lbl] = romAddr;
+        }
+      } else {
+        insts.push([lineNo, code]);
+        romAddr++;
+      }
+    });
+
+    let nextRam = 16;
+    const out = [];
+    for (const [lineNo, code] of insts) {
+      if (code.startsWith('@')) {
+        const op = code.slice(1);
+        if (!op) throw new Error(`Line ${lineNo}: empty A-instruction`);
+        let val;
+        if (/^\d+$/.test(op)) {
+          val = parseInt(op, 10);
+          if (val < 0 || val > 32767) throw new Error(`Line ${lineNo}: constant ${val} out of range`);
+        } else {
+          if (!(op in sym)) sym[op] = nextRam++;
+          val = sym[op];
+        }
+        out.push('0' + val.toString(2).padStart(15, '0'));
+      } else {
+        let dest = '', jump = '', rest = code;
+        if (rest.includes('=')) { const p = rest.split('='); dest = p[0]; rest = p.slice(1).join('='); }
+        let comp = rest;
+        if (rest.includes(';')) { const p = rest.split(';'); comp = p[0]; jump = p.slice(1).join(';'); }
+        if (!(dest in ASM_DEST)) throw new Error(`Line ${lineNo}: invalid dest '${dest}'`);
+        if (!(comp in ASM_COMP)) throw new Error(`Line ${lineNo}: invalid comp '${comp}'`);
+        if (!(jump in ASM_JUMP)) throw new Error(`Line ${lineNo}: invalid jump '${jump}'`);
+        out.push('111' + ASM_COMP[comp] + ASM_DEST[dest] + ASM_JUMP[jump]);
+      }
+    }
+
+    if (warnings.length) {
+      warnBox.textContent = warnings.join('\n');
+      warnBox.style.display = 'block';
+    }
+    document.getElementById('asmOutput').textContent = out.join('\n');
+    document.getElementById('asmOutLabel').textContent =
+      `Generated Machine Code (.hack) — ${out.length} instructions, ${warnings.length} warning(s)`;
+  } catch (e) {
+    errBox.textContent = 'Error: ' + e.message;
+    errBox.style.display = 'block';
+    document.getElementById('asmOutput').textContent = '';
+  }
+}
+
+showPartA('CPU.hdl');
+document.getElementById('partBCode').textContent = CAPSTONE_SOURCES['assembler.py'];
+showPartC('Box.asm');
+
 </script>
 </body>
 </html>
